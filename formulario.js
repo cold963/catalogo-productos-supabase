@@ -99,18 +99,17 @@ async function handleFormSubmit(event) {
 // *******************************************************************
 // 👁️ FUNCIONES DE LECTURA Y VISUALIZACIÓN (READ)
 // *******************************************************************
-
+// CÓDIGO CORREGIDO PARA LA LECTURA (SELECT)
 async function fetchProducts() {
     loadingMessage.textContent = 'Cargando productos...';
     
+    // Quitamos .order('id', ...) para evitar el error de columna inexistente
     const { data, error } = await supabase
         .from('productos')
-        .select('*') 
-        .order('nombre', { ascending: true }); // CORRECCIÓN: Usamos 'nombre' como ordenamiento
+        .select('*'); 
 
     if (error) {
         console.error('Error al cargar productos:', error.message);
-        // Si el error es la columna 'id', aparecerá el error específico en pantalla
         loadingMessage.textContent = `Error al cargar productos: ${error.message}`; 
         return;
     }
@@ -118,7 +117,6 @@ async function fetchProducts() {
     loadingMessage.style.display = 'none'; 
     renderProducts(data);
 }
-
 function renderProducts(products) {
     if (products.length === 0) {
         productList.innerHTML = '<p>No hay productos en el inventario.</p>';
