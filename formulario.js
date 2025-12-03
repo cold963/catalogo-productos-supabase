@@ -1,7 +1,7 @@
 // CLAVES DE CONEXIÓN
 // *******************************************************************
 const SUPABASE_URL = 'https://jmccyspvktlcywffqtlk.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImptY2N5c3B2a3RsY3l3ZmZxdGxrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ3MjA3NjUsImV4cCI6MjA4MDI5Njc2NX0.2nw0wSS3JZ9c0i9lEB76JIhWu2myZg';
+const SUPABASE_ANON_KEY = 'sb_publishable_TdVcoZbtjLStF4Oi2XkMMA_CXjcehoN';
 // *******************************************************************
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
