@@ -8,7 +8,9 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 const form = document.getElementById('productForm');
 const mensaje = document.getElementById('mensaje');
 const submitBtn = document.getElementById('submitBtn');
-const BUCKET_NAME = 'imagenes_productos'; // Nombre del Bucket de Storage
+
+// ¡CORRECCIÓN CLAVE AQUÍ! Usando el nombre real del bucket
+const BUCKET_NAME = 'imagenes-catalogo-base-480102'; // Nombre del Bucket de Storage
 
 form.addEventListener('submit', handleFormSubmit);
 
@@ -31,7 +33,7 @@ async function handleFormSubmit(event) {
     try {
         // 1. SUBIR LA IMAGEN A SUPABASE STORAGE
         const { error: storageError } = await supabase.storage
-            .from(BUCKET_NAME)
+            .from(BUCKET_NAME) // ¡Usando el nombre correcto!
             .upload(filePath, imagenFile);
 
         if (storageError) throw new Error(`Error en Storage: ${storageError.message}. Revisa la política de subida.`);
