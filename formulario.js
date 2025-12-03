@@ -1,38 +1,33 @@
 // CLAVES DE CONEXIÓN
 // *******************************************************************
 const SUPABASE_URL = 'https://jmccyspvktlcywffqtlk.supabase.co';
+// Clave ANÓNIMA REAL de tu proyecto
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImptY2N5c3B2a3RsY3l3ZmZxdGxrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ3MjA3NjUsImV4cCI6MjA4MDI5Njc2NX0.2nw0wSS3JZ9c0i9lEB76JIxHZhSyFnN9o1IhWu2myZg'; 
 // *******************************************************************
 
+// CORRECCIÓN: Usamos window.supabase para evitar el error de sincronización (createClient is not defined)
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY); 
 
 const form = document.getElementById('productForm');
 const mensaje = document.getElementById('mensaje');
 const submitBtn = document.getElementById('submitBtn');
-const productList = document.getElementById('productList'); // Nuevo
-const loadingMessage = document.getElementById('loadingMessage'); // Nuevo
+const productList = document.getElementById('productList');
+const loadingMessage = document.getElementById('loadingMessage');
 
 const BUCKET_NAME = 'imagenes-catalogo-base-480102'; 
 
 form.addEventListener('submit', handleFormSubmit);
 
-// *******************************************************************
-// 🔄 INICIALIZACIÓN: Cargar productos al iniciar la página
-// *******************************************************************
-
-// Llama a la función de carga de productos inmediatamente
+// 🔄 Inicialización: Cargar productos al iniciar la página
 fetchProducts(); 
 
 // *******************************************************************
-// 🛠️ FUNCIONES DE GESTIÓN (CREATE)
+// 🛠️ FUNCIÓN DE CREACIÓN (CREATE)
 // *******************************************************************
 
 async function handleFormSubmit(event) {
     event.preventDefault();
     
-    // ... (Tu lógica de guardado de producto actual, que ya funciona) ...
-    
-    // Deshabilitar botón y mostrar mensaje de progreso
     submitBtn.disabled = true;
     mensaje.className = 'message';
     mensaje.textContent = 'Guardando producto y subiendo imagen...';
@@ -43,7 +38,7 @@ async function handleFormSubmit(event) {
     const imagenFile = document.getElementById('imagen').files[0];
     
     // Generar ruta única para evitar colisiones
-    const filePath = `public/${Date.now()}-${imagenFile.name.replace(/\s/g, '_')}`;
+    const filePath = `public/${Date.now()}-${nombre.replace(/\s/g, '_')}-${imagenFile.name.replace(/\s/g, '_')}`;
     
     try {
         // 1. SUBIR LA IMAGEN A SUPABASE STORAGE
@@ -85,7 +80,7 @@ async function handleFormSubmit(event) {
         mensaje.className = 'message success';
         form.reset();
 
-        // 🟢 NUEVO: Actualizar la lista después de crear un producto
+        // Actualizar la lista después de crear un producto
         fetchProducts(); 
 
     } catch (error) {
@@ -110,16 +105,17 @@ async function fetchProducts() {
     
     const { data, error } = await supabase
         .from('productos')
-        .select('*') // Selecciona todas las columnas
-        .order('id', { ascending: false }); // Ordenar por ID descendente (los más nuevos primero)
+        .select('*') 
+        .order('nombre', { ascending: true }); // CORRECCIÓN: Usamos 'nombre' como ordenamiento
 
     if (error) {
         console.error('Error al cargar productos:', error.message);
-        loadingMessage.textContent = `Error al cargar productos: ${error.message}`;
+        // Si el error es la columna 'id', aparecerá el error específico en pantalla
+        loadingMessage.textContent = `Error al cargar productos: ${error.message}`; 
         return;
     }
 
-    loadingMessage.style.display = 'none'; // Ocultar el mensaje de carga
+    loadingMessage.style.display = 'none'; 
     renderProducts(data);
 }
 
@@ -129,21 +125,21 @@ function renderProducts(products) {
         return;
     }
 
-    let html = '<table><thead><tr><th>ID</th><th>Nombre</th><th>Precio</th><th>Stock</th><th>Imagen</th><th>Acciones</th></tr></thead><tbody>';
+    let html = '<table><thead><tr><th>Nombre</th><th>Precio</th><th>Stock</th><th>Imagen</th><th>Acciones</th></tr></thead><tbody>';
     
     products.forEach(product => {
+        // CORRECCIÓN: Usamos 'nombre' como identificador único (data-id) para Editar/Eliminar
         html += `
-            <tr data-id="${product.id}">
-                <td>${product.id}</td>
+            <tr data-id="${product.nombre}">
                 <td><span class="editable" data-field="nombre">${product.nombre}</span></td>
                 <td>$<span class="editable" data-field="precio">${product.precio}</span></td>
                 <td><span class="editable" data-field="stock">${product.stock}</span></td>
                 <td><img src="${product.url_imagen}" alt="${product.nombre}" style="width: 50px; height: auto;"></td>
                 <td>
-                    <button class="edit-btn" data-id="${product.id}">Editar</button>
-                    <button class="delete-btn" data-id="${product.id}">Eliminar</button>
-                    <button class="save-btn" data-id="${product.id}" style="display:none;">Guardar</button>
-                    <button class="cancel-btn" data-id="${product.id}" style="display:none;">Cancelar</button>
+                    <button class="edit-btn" data-id="${product.nombre}">Editar</button>
+                    <button class="delete-btn" data-id="${product.nombre}">Eliminar</button>
+                    <button class="save-btn" data-id="${product.nombre}" style="display:none;">Guardar</button>
+                    <button class="cancel-btn" data-id="${product.nombre}" style="display:none;">Cancelar</button>
                 </td>
             </tr>
         `;
@@ -166,18 +162,15 @@ function renderProducts(products) {
 // ❌ FUNCIÓN DE ELIMINACIÓN (DELETE)
 // *******************************************************************
 
-async function deleteProduct(productId) {
-    if (!confirm(`¿Estás seguro de que quieres eliminar el producto con ID: ${productId}?`)) {
+async function deleteProduct(productName) {
+    if (!confirm(`¿Estás seguro de que quieres eliminar el producto: ${productName}?`)) {
         return;
     }
-
-    // ⚠️ Importante: Aquí solo eliminamos el registro de la DB. 
-    // Si quieres eliminar el archivo de imagen de Storage, se necesita un paso adicional de Supabase Functions.
 
     const { error } = await supabase
         .from('productos')
         .delete()
-        .eq('id', productId);
+        .eq('nombre', productName); // CORRECCIÓN: Filtramos por la columna 'nombre'
 
     if (error) {
         console.error('Error al eliminar producto:', error.message);
@@ -186,7 +179,7 @@ async function deleteProduct(productId) {
     }
 
     // Actualizar la lista después de eliminar
-    alert(`✅ Producto con ID ${productId} eliminado con éxito.`);
+    alert(`✅ Producto "${productName}" eliminado con éxito.`);
     fetchProducts();
 }
 
@@ -195,12 +188,11 @@ async function deleteProduct(productId) {
 // ✏️ FUNCIONES DE EDICIÓN (UPDATE)
 // *******************************************************************
 
-// Estado temporal para guardar los valores originales antes de editar
 let originalValues = {};
 
 function startEditMode(e) {
     const row = e.target.closest('tr');
-    const productId = row.dataset.id;
+    const productName = row.dataset.id;
     
     // 1. Mostrar/Ocultar botones
     row.querySelector('.edit-btn').style.display = 'none';
@@ -211,27 +203,28 @@ function startEditMode(e) {
     // 2. Habilitar edición y guardar valores originales
     row.querySelectorAll('.editable').forEach(span => {
         const field = span.dataset.field;
-        originalValues[field] = span.textContent; // Guardar valor original
+        originalValues[productName + field] = span.textContent; // Usar nombre+campo como clave para evitar colisiones
         
         const input = document.createElement('input');
-        input.type = (field === 'precio' || field === 'stock') ? 'number' : 'text';
+        // El campo 'nombre' debe ser tipo texto, los otros tipo número
+        input.type = (field === 'precio' || field === 'stock') ? 'number' : 'text'; 
         input.value = span.textContent;
-        input.dataset.field = field; // Para identificarlo en el guardado
+        input.dataset.field = field; 
         
         span.replaceWith(input);
     });
     
     // 3. Añadir listener de Guardar
-    row.querySelector('.save-btn').addEventListener('click', () => saveChanges(productId, row));
-    row.querySelector('.cancel-btn').addEventListener('click', () => cancelEdit(row, productId));
+    row.querySelector('.save-btn').addEventListener('click', () => saveChanges(productName, row));
+    row.querySelector('.cancel-btn').addEventListener('click', () => cancelEdit(row, productName));
 }
 
-function cancelEdit(row, productId) {
+function cancelEdit(row, productName) {
     row.querySelectorAll('input').forEach(input => {
         const span = document.createElement('span');
         span.className = 'editable';
         span.dataset.field = input.dataset.field;
-        span.textContent = originalValues[input.dataset.field]; // Restaurar valor
+        span.textContent = originalValues[productName + input.dataset.field]; // Restaurar valor
         input.replaceWith(span);
     });
     
@@ -240,11 +233,10 @@ function cancelEdit(row, productId) {
     row.querySelector('.delete-btn').style.display = 'inline-block';
     row.querySelector('.save-btn').style.display = 'none';
     row.querySelector('.cancel-btn').style.display = 'none';
-    delete originalValues[productId];
 }
 
 
-async function saveChanges(productId, row) {
+async function saveChanges(productName, row) {
     let updates = {};
     let hasChanges = false;
     
@@ -260,7 +252,7 @@ async function saveChanges(productId, row) {
         }
 
         // Comprobar si realmente hubo un cambio
-        if (newValue !== originalValues[field]) {
+        if (newValue !== originalValues[productName + field]) {
             updates[field] = newValue;
             hasChanges = true;
         }
@@ -268,14 +260,14 @@ async function saveChanges(productId, row) {
 
     if (!hasChanges) {
         alert("No se detectaron cambios.");
-        cancelEdit(row, productId);
+        cancelEdit(row, productName);
         return;
     }
 
     const { error } = await supabase
         .from('productos')
         .update(updates)
-        .eq('id', productId);
+        .eq('nombre', productName); // CORRECCIÓN: Filtramos por la columna 'nombre'
 
     if (error) {
         console.error('Error al actualizar producto:', error.message);
@@ -284,6 +276,6 @@ async function saveChanges(productId, row) {
     }
 
     alert('✅ Producto actualizado con éxito.');
-    // Limpiar el modo edición y recargar la lista para mostrar el resultado
+    // Recargar la lista para que refleje los cambios (ej: si se cambió el 'nombre')
     fetchProducts();
 }
