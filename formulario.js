@@ -1,16 +1,21 @@
 // CLAVES DE CONEXIÓN
 // *******************************************************************
 const SUPABASE_URL = 'https://jmccyspvktlcywffqtlk.supabase.co';
-const SUPABASE_ANON_KEY = 'sb_publishable_TdVcoZbtjLStF4Oi2XkMMA_CXjcehoN';
+// Clave ANÓNIMA REAL de tu proyecto
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImptY2N5c3B2a3RsY3l3ZmZxdGxrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ3MjA3NjUsImV4cCI6MjA4MDI5Njc2NX0.2nw0wSS3JZ9c0i9lEB76JIxHZhSyFnN9o1IhWu2myZg'; 
 // *******************************************************************
 
-const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+// *******************************************************************
+// CORRECCIÓN CLAVE: Usamos window.supabase.createClient para evitar el error de sincronización
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY); 
+// *******************************************************************
+
 const form = document.getElementById('productForm');
 const mensaje = document.getElementById('mensaje');
 const submitBtn = document.getElementById('submitBtn');
 
-// ¡CORRECCIÓN CLAVE AQUÍ! Usando el nombre real del bucket
-const BUCKET_NAME = 'imagenes-catalogo-base-480102'; // Nombre del Bucket de Storage
+// CORRECCIÓN CLAVE: Nombre real y correcto del Bucket de Storage
+const BUCKET_NAME = 'imagenes-catalogo-base-480102'; 
 
 form.addEventListener('submit', handleFormSubmit);
 
@@ -29,7 +34,8 @@ async function handleFormSubmit(event) {
     
     // Generar ruta única para evitar colisiones
     const filePath = `public/${Date.now()}-${imagenFile.name.replace(/\s/g, '_')}`;
-try {
+    
+    try {
         // 1. SUBIR LA IMAGEN A SUPABASE STORAGE
         const { data: uploadData, error: storageError } = await supabase.storage
              .from(BUCKET_NAME)
@@ -38,10 +44,11 @@ try {
         // FORZAMOS LA REVISIÓN DEL ERROR DE STORAGE
         if (storageError) {
              console.error("Error de Subida a Storage:", storageError);
-             throw new Error(`❌ Storage Falló: ${storageError.message}`);
+             // El mensaje de error será claro (p. ej., Policy restricts access)
+             throw new Error(`❌ Storage Falló: ${storageError.message}`); 
         }
 
-        // 2. OBTENER LA URL PÚBLICA (Ya no debería fallar)
+        // 2. OBTENER LA URL PÚBLICA (Ahora funciona gracias a la política SELECT con 'true')
         const { data: publicURLData } = supabase.storage
             .from(BUCKET_NAME)
             .getPublicUrl(filePath);
@@ -72,10 +79,9 @@ try {
         form.reset();
 
     } catch (error) {
-        // Manejo de errores
-        console.error('Error General de Operación:', error); // Muestra el objeto completo en F12
+        // Manejo de errores que muestra el mensaje exacto de Supabase
+        console.error('Error General de Operación:', error); 
         
-        // Muestra el mensaje de error EXACTO en la página
         let displayMessage = error.message || "Error desconocido. Revisa la Consola (F12).";
         
         mensaje.textContent = `🚨 Falló la operación: ${displayMessage}`;
