@@ -199,18 +199,25 @@ function startEditMode(e) {
     row.querySelector('.cancel-btn').style.display = 'inline-block';
 
     // 2. Habilitar edición y guardar valores originales
-    row.querySelectorAll('.editable').forEach(span => {
-        const field = span.dataset.field;
-        originalValues[productName + field] = span.textContent; // Usar nombre+campo como clave para evitar colisiones
-        
-        const input = document.createElement('input');
-        // El campo 'nombre' debe ser tipo texto, los otros tipo número
-        input.type = (field === 'precio' || field === 'stock') ? 'number' : 'text'; 
-        input.value = span.textContent;
-        input.dataset.field = field; 
-        
-        span.replaceWith(input);
-    });
+  // 2. Habilitar edición y guardar valores originales
+row.querySelectorAll('.editable').forEach(span => {
+    const field = span.dataset.field;
+    
+    // AÑADIMOS ESTA CONDICIÓN CLAVE: Si el campo es 'nombre', no lo hacemos editable
+    if (field === 'nombre') {
+        return; // Salta al siguiente elemento sin crear un input
+    }
+    
+    originalValues[productName + field] = span.textContent; 
+    
+    const input = document.createElement('input');
+    // Si llegamos aquí, solo puede ser 'precio' o 'stock'
+    input.type = 'number'; 
+    input.value = span.textContent;
+    input.dataset.field = field; 
+    
+    span.replaceWith(input);
+});
     
     // 3. Añadir listener de Guardar
     row.querySelector('.save-btn').addEventListener('click', () => saveChanges(productName, row));
