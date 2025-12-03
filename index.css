@@ -1,0 +1,549 @@
+/* ===================================== */
+/* === 1. AJUSTES GLOBALES Y RESETEO === */
+/* ===================================== */
+:root {
+    --primary-color: #3f8e9e;       /* Nuevo color principal (azulado/turquesa de la Image 2) */
+    --secondary-color: #28a745;     /* Verde para botones de acción (comprar) */
+    --text-color-light: #f8f9fa;    /* Texto claro para fondo oscuro */
+    --text-color-dark: #343a40;     /* Texto oscuro principal */
+    --light-text-color-soft: #6c757d;/* Texto secundario/parágrafos más suave */
+    --super-light-bg: #f0f2f5;      /* Fondo muy claro (ligeramente más gris) */
+    --card-bg: #ffffff;             /* Fondo de tarjetas, hero */
+    --footer-bg: #212529;           /* Fondo del footer (gris muy oscuro) */
+    --footer-input-bg: #343a40;     /* Fondo de inputs en footer */
+    --border-color: #e3e6ea;        /* Borde muy sutil, ajustado al nuevo fondo */
+    --shadow-light: 0 6px 15px rgba(0, 0, 0, 0.08); /* Sombra más definida */
+    --header-height: 60px;          /* Altura fija del header */
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--text-color-dark);
+    background-color: var(--super-light-bg);
+    line-height: 1.6;
+    scroll-behavior: smooth;
+}
+
+a {
+    text-decoration: none;
+    color: var(--primary-color); /* Enlaces con el nuevo color */
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: #337a88; /* Tono más oscuro al pasar el mouse */
+}
+
+.section-title {
+    text-align: center;
+    padding: 50px 20px 30px;
+    font-size: 2.4em;
+    color: var(--text-color-dark);
+    font-weight: 300;
+    letter-spacing: 0.8px;
+    margin-bottom: 20px;
+}
+
+.nosotros-info {
+    padding: 60px 5%;
+    background-color: var(--card-bg);
+    text-align: center;
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 40px;
+}
+
+.nosotros-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.nosotros-content p {
+    font-size: 1.15em;
+    margin-bottom: 20px;
+    color: var(--light-text-color-soft);
+}
+
+/* =============================== */
+/* === 2. HEADER Y NAVEGACIÓN === */
+/* =============================== */
+.main-header {
+    background-color: var(--primary-color); /* Nuevo color */
+    color: white;
+    height: var(--header-height);
+    padding: 0 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.logo h1 {
+    font-size: 1.8em;
+    margin: 0;
+    font-weight: 400;
+}
+
+.main-nav {
+    display: flex;
+    align-items: center;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 25px;
+    padding: 0;
+    margin: 0;
+}
+
+.nav-links li a {
+    color: white;
+    font-weight: 400;
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+.nav-links li a:hover {
+    background-color: rgba(255, 255, 255, 0.15); /* Efecto más sutil */
+}
+
+.whatsapp-link img {
+    height: 25px;
+    margin-left: 10px;
+    vertical-align: middle;
+}
+
+.menu-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    display: none;
+}
+
+.menu-btn span {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background-color: white;
+    margin: 5px 0;
+    transition: all 0.3s ease;
+}
+
+/* =============================== */
+/* === 3. SECCIÓN HERO (Banner) === */
+/* =============================== */
+.hero-banner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 100px 5% 80px;
+    background-color: var(--card-bg);
+    text-align: center;
+    border-bottom: 5px solid var(--border-color);
+}
+
+.hero-content {
+    max-width: 800px;
+    margin-bottom: 50px;
+}
+
+.hero-content h2 {
+    font-size: 3.8em;
+    color: var(--text-color-dark);
+    font-weight: 300;
+    margin-bottom: 25px;
+    line-height: 1.1;
+    letter-spacing: 1px;
+}
+
+.hero-content p {
+    font-size: 1.4em;
+    margin-bottom: 50px;
+    color: var(--light-text-color-soft);
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.hero-image {
+    width: 280px;
+    height: 280px;
+    object-fit: contain;
+    border-radius: 50%;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    border: 6px solid var(--primary-color); /* Borde con el nuevo color */
+}
+
+/* ========================================== */
+/* === 4. CARRUSELES (Categorías) === */
+/* ========================================== */
+.categorias-destacadas {
+    padding: 60px 0;
+    background-color: var(--super-light-bg);
+    overflow: hidden; /* Importante para el carrusel */
+}
+
+.categorias-carousel {
+    position: relative;
+    padding: 0 60px; /* Más espacio para los botones a los lados */
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.categorias-track {
+    display: flex;
+    overflow-x: scroll;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    gap: 30px;
+    padding: 20px 0;
+}
+
+/* Ocultar barra de desplazamiento */
+.categorias-track::-webkit-scrollbar {
+    display: none;
+}
+
+.categoria-card {
+    min-width: 250px;
+    flex-shrink: 0;
+    background-color: var(--card-bg);
+    border-radius: 15px;
+    box-shadow: var(--shadow-light);
+    padding: 25px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.categoria-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+}
+
+.categoria-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    filter: brightness(0.98);
+    transition: filter 0.3s;
+}
+
+.categoria-card:hover img {
+    filter: brightness(1);
+}
+
+.cat-nombre {
+    font-weight: 600;
+    font-size: 1.25em;
+    margin-bottom: 10px;
+    color: var(--text-color-dark);
+}
+
+/* Botones de Navegación del Carrusel */
+.cat-btn {
+    position: absolute;
+    top: 50%; /* Centrado verticalmente */
+    transform: translateY(-50%);
+    background: var(--primary-color); /* Botones con el nuevo color */
+    color: white;
+    border: none;
+    padding: 15px;
+    cursor: pointer;
+    z-index: 50;
+    border-radius: 50%;
+    font-size: 1.6em;
+    line-height: 1;
+    transition: background-color 0.3s, transform 0.2s, opacity 0.3s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.cat-btn:hover {
+    background: #337a88; /* Tono más oscuro al pasar el mouse */
+    transform: translateY(-50%) scale(1.15);
+}
+
+.cat-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: translateY(-50%) scale(1); /* No se agranda si está deshabilitado */
+}
+
+.cat-btn.prev { left: 15px; }
+.cat-btn.next { right: 15px; }
+
+
+/* Botones Generales */
+.btn-primary, .btn-comprar, .btn-comprar1 {
+    display: inline-block;
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+    padding: 15px 40px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: 600;
+    letter-spacing: 1px;
+    transition: background-color 0.3s ease, transform 0.2s;
+    text-transform: uppercase;
+    font-size: 1.15em;
+}
+
+.btn-comprar:hover, .btn-comprar1:hover, .btn-primary:hover {
+    background-color: #1e7e34;
+    transform: translateY(-6px);
+}
+
+/* ============================== */
+/* === 6. ANIMACIONES LIMPIAS === */
+/* ============================== */
+
+@keyframes fadeInMoveUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.animate-in {
+    opacity: 0;
+    animation: fadeInMoveUp 0.8s ease-out forwards;
+}
+
+.animate-fade {
+    opacity: 0;
+    animation: fadeIn 0.9s ease-out forwards;
+}
+
+.delay-1 { animation-delay: 0.1s; }
+.delay-2 { animation-delay: 0.2s; }
+.delay-3 { animation-delay: 0.3s; }
+.delay-4 { animation-delay: 0.4s; }
+.delay-5 { animation-delay: 0.5s; }
+.delay-6 { animation-delay: 0.6s; }
+.delay-7 { animation-delay: 0.7s; }
+.delay-8 { animation-delay: 0.8s; }
+.delay-9 { animation-delay: 0.9s; }
+.delay-10 { animation-delay: 1.0s; }
+
+
+/* =========================== */
+/* === 7. FOOTER (Rediseño) === */
+/* =========================== */
+.main-footer {
+    background-color: var(--footer-bg); 
+    color: var(--text-color-light);
+    padding: 60px 5% 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+}
+
+.beneficios-footer {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    max-width: 900px;
+    padding-bottom: 35px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 40px;
+    gap: 30px;
+}
+
+.beneficio-item {
+    text-align: center;
+    max-width: 180px;
+}
+
+.beneficio-icon {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 12px;
+    filter: invert(0.95);
+}
+
+.beneficio-texto {
+    font-size: 1em;
+    font-weight: 300;
+    line-height: 1.4;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.footer-grid-container {
+    display: grid;
+    grid-template-columns: 2fr 3fr 1fr;
+    gap: 50px;
+    width: 100%;
+    max-width: 1200px;
+    align-items: start;
+}
+
+.footer-contact-info h3 {
+    color: white;
+    margin-bottom: 25px;
+    font-size: 1.8em;
+    font-weight: 400;
+}
+
+.footer-contact-info p {
+    margin-bottom: 12px;
+    font-size: 1em;
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.footer-form input, .footer-form textarea {
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    border: 1px solid #495057;
+    background-color: var(--footer-input-bg);
+    color: var(--text-color-light);
+    font-size: 1em;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.footer-form input:focus, .footer-form textarea:focus {
+    border-color: var(--primary-color); /* Nuevo color de borde al enfocar */
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1), 0 0 0 3px rgba(63, 142, 158, 0.25); /* Sombra de enfoque con nuevo color */
+    outline: none;
+}
+
+.footer-form textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.footer-form .btn-comprar {
+    background-color: var(--primary-color); /* Botón de enviar con nuevo color */
+    width: 100%;
+    padding: 15px;
+    letter-spacing: 1.2px;
+}
+.footer-form .btn-comprar:hover {
+    background-color: #337a88; /* Tono más oscuro al pasar el mouse */
+}
+
+.admin-link {
+    text-align: right;
+    align-self: center;
+    padding-right: 20px;
+}
+
+.admin-link a img {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    transition: transform 0.3s ease;
+}
+
+.admin-link a:hover img {
+    transform: scale(1.15);
+}
+
+/* ================================== */
+/* === 8. MEDIA QUERIES (Móvil) === */
+/* ================================== */
+@media (max-width: 768px) {
+    /* HEADER Móvil */
+    .menu-btn {
+        display: block;
+    }
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: var(--header-height);
+        left: 0;
+        width: 100%;
+        background-color: var(--primary-color);
+        box-shadow: 0 4px 5px rgba(0, 0, 0, 0.1);
+        padding: 10px 0;
+        text-align: center;
+    }
+    .nav-links.active {
+        display: flex;
+    }
+    .nav-links li {
+        width: 100%;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .nav-links li:last-child {
+        border-bottom: none;
+    }
+
+    /* HERO Móvil */
+    .hero-banner {
+        padding: 80px 5% 60px;
+    }
+    .hero-content h2 {
+        font-size: 2.8em;
+    }
+    .hero-content p {
+        font-size: 1.2em;
+    }
+    .hero-image {
+        width: 220px;
+        height: 220px;
+    }
+
+    /* SECCIÓN NOSOTROS (Móvil) */
+    .nosotros-info {
+        padding: 40px 5%;
+    }
+    .nosotros-content p {
+        font-size: 1em;
+    }
+
+    /* CARRUSELES Móvil */
+    .categorias-carousel {
+        padding: 0 10px;
+    }
+    .cat-btn.prev { left: 0px; }
+    .cat-btn.next { right: 0px; }
+
+    /* FOOTER Móvil */
+    .main-footer {
+        padding: 50px 5% 30px;
+        gap: 30px;
+    }
+    .beneficios-footer {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+        padding-bottom: 25px;
+        margin-bottom: 30px;
+    }
+    .beneficio-item {
+        flex-basis: 45%;
+        max-width: none;
+    }
+    .footer-grid-container {
+        grid-template-columns: 1fr;
+        gap: 40px;
+        text-align: center;
+    }
+    .admin-link {
+        text-align: center;
+        padding-right: 0;
+    }
+}

@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mega Distribuidora - Tu Mayorista de Confianza</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+    <header class="main-header">
+        <div class="logo">
+            <h1>MegaDistribuidora</h1>
+        </div>
+
+        <nav class="main-nav">
+            <button class="menu-btn" id="menuBtn" aria-label="Menú Principal">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home">Inicio</a></li>
+                <li><a href="carrito.html">Todos los Productos</a></li>
+                <li><a href="#categorias">Categorías</a></li>
+                <li>
+                    <a href="https://wa.me/573174420752" target="_blank" class="whatsapp-link" aria-label="WhatsApp">
+                        <img src="whatsapp.png" alt="WhatsApp Icono" style="height: 30px;">
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        
+        <section class="hero-banner" id="home">
+            <div class="hero-content">
+                <h2 class="animate-in">Bienvenido a MegaDistribuidora</h2>
+                <p class="animate-in delay-1">Productos de Calidad al Mejor Precio en Popayán, Cauca.</p>
+                <a href="carrito.html" class="btn-primary animate-in delay-2">
+                    <button class="btn-comprar1">Explora Todos los Productos</button>
+                </a>
+            </div>
+            <img src="logo.jpeg" alt="Imagen de presentación de MegaDistribuidora" class="hero-image animate-fade">
+        </section>
+
+        <section class="categorias-destacadas" id="categorias">
+            <h2 class="section-title animate-in">Nuestras Categorías</h2>
+            <div class="categorias-carousel">
+                <button class="cat-btn prev" aria-label="Categoría Anterior">&#10094;</button>
+                <div class="categorias-track">
+                    <div class="categoria-card animate-fade delay-3"><a href="cuidadoparapiel.html"><img src="piel.jpeg" alt="Cuidado Piel"><div class="cat-nombre">cuidado para la piel</div></a></div>
+                    <div class="categoria-card animate-fade delay-4"><a href="cuidadopersonal.html"><img src="personal.jpg" alt="Cuidado Personal"><div class="cat-nombre">cuidado personal</div></a></div>
+                    <div class="categoria-card animate-fade delay-5"><a href="insumosmedicos.html"><img src="medicos.jpeg" alt="Insumos Médicos"><div class="cat-nombre">insumos medicos</div></a></div>
+                    <div class="categoria-card animate-fade delay-6"><a href="maquillaje.html"><img src="maquillage.jpeg" alt="Maquillaje"><div class="cat-nombre">maquillaje</div></a></div>
+                    <div class="categoria-card animate-fade delay-7"><a href="medicamentos.html"><img src="medicamentos.jpeg" alt="Medicamentos"><div class="cat-nombre">medicamentos</div></a></div>
+                    <div class="categoria-card animate-fade delay-8"><a href="u.i.html"><img src="ui.jpeg" alt="U.I"><div class="cat-nombre">u.i</div></a></div>
+                    <div class="categoria-card animate-fade delay-9"><a href="drogablanca.html"><img src="medicamentosbs.jpeg" alt="Droga Blanca"><div class="cat-nombre">droga blanca</div></a></div>
+                    <div class="categoria-card animate-fade delay-10"><a href="carrito.html"><img src="todas.jpeg" alt="Todas las categorías"><div class="cat-nombre">Todas</div></a></div>
+                </div>
+                <button class="cat-btn next" aria-label="Categoría Siguiente">&#10095;</button>
+            </div>
+        </section>
+
+        <section class="nosotros-info" id="nosotros">
+            <h2 class="section-title animate-in">Sobre Nosotros</h2>
+            <div class="nosotros-content">
+                <p class="animate-in delay-1">En Megadistribuidora, nos dedicamos a ser tu aliado confiable, ofreciendo una amplia gama de productos de alta calidad a precios competitivos. Nuestra misión es superar tus expectativas con un servicio ágil y personalizado, asegurando que cada cliente reciba la atención que merece.</p>
+                <p class="animate-in delay-2">Visualizamos un futuro donde MegaDistribuidora sea sinónimo de excelencia e innovación en el sector, expandiendo nuestro alcance y fortaleciendo la confianza de nuestros socios comerciales y comunidades, siempre con la convicción de un crecimiento sostenible y con propósito.</p>
+            </div>
+        </section>
+        
+    </main>
+
+    <footer class="main-footer">
+
+        <div class="beneficios-footer">
+            <div class="beneficio-item animate-in">
+                <img src="atencion.png" alt="Atención al cliente" class="beneficio-icon">
+                <div class="beneficio-texto">Atención al <br>cliente</div>
+            </div>
+            <div class="beneficio-item animate-in delay-1">
+                <img src="envios.png" alt="Rapidez de Envíos" class="beneficio-icon">
+                <div class="beneficio-texto">Hacemos envios</div>
+            </div>
+            <div class="beneficio-item animate-in delay-2">
+                <img src="medios de pago.png" alt="Todos los medios de pago" class="beneficio-icon">
+                <div class="beneficio-texto">Todos los medios<br>de pago</div>
+            </div>
+        </div>
+
+        <div class="footer-grid-container">
+            <div class="footer-contact-info animate-in">
+                <h3>Contáctanos</h3>
+                <p>Ciudad: Popayán, Cauca, Colombia</p>
+                <p>Teléfono: +57 317 4420752</p>
+                <p>Email: megadistribuidora68@gmail.com</p>
+            </div>
+            
+            <form class="footer-form animate-in delay-1" id="footerEmailForm">
+                <input type="email" placeholder="Tu correo electrónico" required>
+                <textarea placeholder="Escribe tu mensaje" required></textarea>
+                <button type="submit" class="btn-comprar">Enviar</button>
+            </form>
+
+            <div class="admin-link animate-fade delay-2">
+                <a href="administrador.html" aria-label="Acceso a Administración">
+                    <img src="administrador.jpeg" alt="Logo Administración">
+                </a>
+            </div>
+        </div>
+        
+    </footer>
+
+    <script src="index.js"></script>
+</body>
+</html>

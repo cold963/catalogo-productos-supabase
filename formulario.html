@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creación de Productos - Supabase</title>
+    <link rel="stylesheet" href="formulario.css">
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Nuevo Producto 📦</h1>
+        <form id="productForm">
+            <div class="form-group">
+                <label for="nombre">Nombre del Producto:</label>
+                <input type="text" id="nombre" required>
+            </div>
+
+            <div class="form-group">
+                <label for="precio">Precio ($):</label>
+                <input type="number" id="precio" step="0.01" min="0" required>
+            </div>
+
+            <div class="form-group">
+                <label for="stock">Stock Disponible:</label>
+                <input type="number" id="stock" min="0" required>
+            </div>
+
+            <div class="form-group">
+                <label for="imagen">Imagen del Producto:</label>
+                <input type="file" id="imagen" accept="image/*" required>
+            </div>
+            
+            <button type="submit" id="submitBtn">Guardar Producto</button>
+            <p id="mensaje" class="message"></p>
+        </form>
+    </div>
+
+    <script src="formulario.js"></script>
+</body>
+</html>
