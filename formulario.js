@@ -29,16 +29,19 @@ async function handleFormSubmit(event) {
     
     // Generar ruta única para evitar colisiones
     const filePath = `public/${Date.now()}-${imagenFile.name.replace(/\s/g, '_')}`;
-
-    try {
+try {
         // 1. SUBIR LA IMAGEN A SUPABASE STORAGE
-        const { error: storageError } = await supabase.storage
-            .from(BUCKET_NAME) // ¡Usando el nombre correcto!
-            .upload(filePath, imagenFile);
+        const { data: uploadData, error: storageError } = await supabase.storage
+             .from(BUCKET_NAME)
+             .upload(filePath, imagenFile);
 
-        if (storageError) throw new Error(`Error en Storage: ${storageError.message}. Revisa la política de subida.`);
+        // FORZAMOS LA REVISIÓN DEL ERROR DE STORAGE
+        if (storageError) {
+             console.error("Error de Subida a Storage:", storageError);
+             throw new Error(`❌ Storage Falló: ${storageError.message}`);
+        }
 
-        // 2. OBTENER LA URL PÚBLICA
+        // 2. OBTENER LA URL PÚBLICA (Ya no debería fallar)
         const { data: publicURLData } = supabase.storage
             .from(BUCKET_NAME)
             .getPublicUrl(filePath);
@@ -57,7 +60,11 @@ async function handleFormSubmit(event) {
                 }
             ]);
 
-        if (dbError) throw new Error(`Error en Base de Datos: ${dbError.message}. Revisa el nombre de la tabla.`);
+        // FORZAMOS LA REVISIÓN DEL ERROR DE BASE DE DATOS
+        if (dbError) {
+             console.error("Error de Inserción DB:", dbError);
+             throw new Error(`❌ Base de Datos Falló: ${dbError.message}`);
+        }
 
         // Éxito
         mensaje.textContent = `✅ Producto "${nombre}" guardado con éxito.`;
@@ -66,8 +73,12 @@ async function handleFormSubmit(event) {
 
     } catch (error) {
         // Manejo de errores
-        console.error('Error al guardar el producto:', error.message);
-        mensaje.textContent = `❌ Falló la operación: ${error.message}`;
+        console.error('Error General de Operación:', error); // Muestra el objeto completo en F12
+        
+        // Muestra el mensaje de error EXACTO en la página
+        let displayMessage = error.message || "Error desconocido. Revisa la Consola (F12).";
+        
+        mensaje.textContent = `🚨 Falló la operación: ${displayMessage}`;
         mensaje.className = 'message error';
     } finally {
         submitBtn.disabled = false;
