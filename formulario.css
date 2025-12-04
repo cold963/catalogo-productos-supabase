@@ -1,25 +1,38 @@
+/* ==================================== */
+/* 1. LAYOUT PRINCIPAL Y FORMULARIO */
+/* ==================================== */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f7f6;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #e9ecef; /* Fondo más suave */
     display: flex;
-    justify-content: center;
+    flex-direction: column; /* Apilar contenido verticalmente */
     align-items: center;
+    padding: 20px;
     min-height: 100vh;
     margin: 0;
 }
 
+/* Contenedor del formulario y contenedor de la lista */
 .container {
     background: #ffffff;
     padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15); /* Sombra más profunda */
     width: 100%;
-    max-width: 450px;
+    max-width: 450px; /* Ancho máximo para el formulario */
+    margin-bottom: 20px;
 }
 
-h1 {
+/* Contenedor de la lista de productos (más ancho) */
+.product-list-container {
+    max-width: 900px; /* Permitir más espacio para la tabla */
+    padding: 20px;
+    margin-top: 20px;
+}
+
+h1, h2 {
     text-align: center;
-    color: #333;
+    color: #212529;
     margin-bottom: 25px;
 }
 
@@ -30,41 +43,54 @@ h1 {
 label {
     display: block;
     margin-bottom: 8px;
-    font-weight: bold;
-    color: #555;
+    font-weight: 600; /* Ligeramente más grueso */
+    color: #495057;
 }
 
 input[type="text"],
 input[type="number"],
 input[type="file"] {
     width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box; /* Importante para el padding */
+    padding: 12px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+}
+
+input:focus {
+    border-color: #007bff;
+    outline: none;
 }
 
 button {
     width: 100%;
-    padding: 12px;
-    background-color: #007bff;
+    padding: 14px;
+    background-color: #28a745; /* Verde para el botón principal */
     color: white;
     border: none;
-    border-radius: 4px;
-    font-size: 16px;
+    border-radius: 6px;
+    font-size: 17px;
+    font-weight: bold;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.1s;
 }
 
 button:hover {
-    background-color: #0056b3;
+    background-color: #1e7e34;
+    transform: translateY(-1px);
+}
+button:disabled {
+    background-color: #6c757d;
+    cursor: not-allowed;
 }
 
 .message {
     margin-top: 20px;
-    padding: 10px;
-    border-radius: 4px;
+    padding: 12px;
+    border-radius: 6px;
     text-align: center;
+    font-weight: 500;
 }
 
 .success {
@@ -78,55 +104,165 @@ button:hover {
     color: #721c24;
     border: 1px solid #f5c6cb;
 }
-/* Para el contenedor de la lista de productos */
-.product-list-container {
-    margin-top: 40px;
-    padding: 20px;
-}
 
-/* Estilos de la tabla */
+/* ==================================== */
+/* 2. ESTILOS DE LA TABLA DE PRODUCTOS */
+/* ==================================== */
+
 #productList table {
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: separate; /* Separamos las celdas para redondear */
+    border-spacing: 0 10px; /* Espacio entre filas */
     margin-top: 20px;
 }
 
-#productList th, #productList td {
-    border: 1px solid #ccc;
-    padding: 8px;
-    text-align: center;
+#productList thead th {
+    background-color: #007bff;
+    color: white;
+    padding: 12px;
+    border: none;
+    font-weight: 600;
+    position: sticky; /* Fija el encabezado si hay mucho scroll */
+    top: 0;
 }
 
-#productList th {
-    background-color: #f2f2f2;
+#productList tr {
+    background-color: #f8f9fa;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05); /* Sombra sutil en filas */
+    transition: background-color 0.3s;
 }
+#productList tr:hover {
+    background-color: #e9ecef;
+}
+
+#productList td {
+    border: none;
+    padding: 10px 8px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+/* Redondear las esquinas de la primera y última celda de cada fila */
+#productList tr td:first-child { border-top-left-radius: 6px; border-bottom-left-radius: 6px; }
+#productList tr td:last-child { border-top-right-radius: 6px; border-bottom-right-radius: 6px; }
 
 /* Estilos para las imágenes pequeñas */
 #productList img {
-    border-radius: 4px;
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid #ddd;
 }
 
 /* Estilos para los botones de la tabla */
 .delete-btn, .edit-btn, .save-btn, .cancel-btn {
-    padding: 5px 10px;
-    margin: 2px;
+    padding: 6px 10px;
+    margin: 3px 0;
     cursor: pointer;
     border: none;
     border-radius: 4px;
-    font-size: 0.9em;
+    font-size: 0.85em;
+    font-weight: 600;
+    transition: opacity 0.2s;
+    width: 80px; /* Ancho fijo */
 }
 
-.delete-btn { background-color: #f44336; color: white; }
-.edit-btn { background-color: #2196F3; color: white; }
-.save-btn { background-color: #4CAF50; color: white; }
-.cancel-btn { background-color: #aaa; color: #333; }
+.delete-btn { background-color: #dc3545; color: white; }
+.edit-btn { background-color: #17a2b8; color: white; }
+.save-btn { background-color: #28a745; color: white; }
+.cancel-btn { background-color: #6c757d; color: white; }
 
 /* Estilo para los campos de edición */
-.editable {
-    cursor: pointer;
+#productList input[type="text"], 
+#productList input[type="number"] {
+    width: 100%; 
+    padding: 6px;
+    text-align: center;
+    font-size: 1em;
+    height: auto;
 }
-#productList input[type="text"], #productList input[type="number"] {
-    width: 80px; /* Ajusta el ancho para que quepa */
-    padding: 3px;
-    box-sizing: border-box;
+/* Estilo para los campos editables dentro de la tabla */
+#productList td:nth-child(2) input[type="text"] { width: 100px; } /* Nombre */
+#productList td:nth-child(3) input[type="number"] { width: 70px; } /* Precio */
+#productList td:nth-child(4) input[type="number"] { width: 60px; } /* Stock */
+
+/* ==================================== */
+/* 3. RESPONSIVE DESIGN (MÓVIL) */
+/* ==================================== */
+@media (max-width: 900px) {
+    /* Permitir que la lista ocupe más ancho en tablet */
+    .product-list-container {
+        max-width: 95%;
+    }
+}
+
+@media (max-width: 600px) {
+    /* Ajustes generales para el móvil */
+    body {
+        padding: 10px;
+    }
+    .container {
+        padding: 20px;
+    }
+    .product-list-container {
+        padding: 10px;
+    }
+
+    /* Convertir la Tabla en Tarjetas Verticales (Display: Block) */
+    #productList table, 
+    #productList thead, 
+    #productList tbody, 
+    #productList th, 
+    #productList td, 
+    #productList tr {
+        display: block;
+    }
+
+    #productList thead {
+        display: none; /* Ocultar encabezados de la tabla original */
+    }
+
+    #productList tr {
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        padding: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+    }
+    
+    #productList td {
+        border: none;
+        position: relative;
+        padding-left: 50%; /* Espacio para la etiqueta */
+        text-align: left;
+        font-size: 14px;
+        margin-bottom: 5px;
+        border-radius: 0;
+    }
+
+    /* Mostrar la etiqueta del campo antes del valor */
+    #productList td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 10px;
+        width: 40%;
+        padding-right: 10px;
+        white-space: nowrap;
+        font-weight: bold;
+        color: #495057;
+    }
+    
+    /* La columna de imagen y acciones debe ocupar todo el ancho */
+    #productList tr td:nth-last-child(2),
+    #productList tr td:last-child {
+        text-align: center;
+        padding-left: 10px;
+    }
+    
+    /* Botones y campos de edición en móvil */
+    .delete-btn, .edit-btn, .save-btn, .cancel-btn {
+        width: 45%;
+        margin: 5px 2%;
+    }
 }

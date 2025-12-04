@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acceso de Administrador</title>
+    <link rel="stylesheet" href="seccion.css">
+</head>
+<body>
+    <div class="login-container">
+        <h2>🔒 Acceso de Administrador</h2>
+        
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="username">Nombre de Usuario:</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Contraseña:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            
+            <button type="submit">Iniciar Sesión</button>
+            
+            <p id="message" class="message"></p>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Evita que el formulario se envíe
+
+            const USERNAME_CORRECTO = 'Megadistribuidora68';
+            const PASSWORD_CORRECTA = '1234';
+
+            const usernameInput = document.getElementById('username').value;
+            const passwordInput = document.getElementById('password').value;
+            const messageElement = document.getElementById('message');
+
+            if (usernameInput === USERNAME_CORRECTO && passwordInput === PASSWORD_CORRECTA) {
+                messageElement.textContent = '✅ Acceso concedido. Redirigiendo...';
+                messageElement.className = 'message success';
+                
+                // 🚀 CAMBIO CLAVE: Redirige al formulario si la contraseña es correcta
+                setTimeout(() => {
+                    window.location.href = 'formulario.html'; 
+                }, 1000); // Espera 1 segundo para que el usuario vea el mensaje de éxito
+
+            } else {
+                messageElement.textContent = '❌ Usuario o contraseña incorrectos.';
+                messageElement.className = 'message error';
+            }
+        });
+    </script>
+</body>
+</html>
