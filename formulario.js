@@ -1,139 +1,83 @@
-// CLAVES DE CONEXIÓN
-// *******************************************************************
-const SUPABASE_URL = 'https://jmccyspvktlcywffqtlk.supabase.co';
-// Clave ANÓNIMA REAL de tu proyecto
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImptY2N5c3B2a3RsY3l3ZmZxdGxrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ3MjA3NjUsImV4cCI6MjA4MDI5Njc2NX0.2nw0wSS3JZ9c0i9lEB76JIxHZhSyFnN9o1IhWu2myZg'; 
-// *******************************************************************
+// ===============================================
+// 1. CONFIGURACIÓN DE SUPABASE
+// ¡¡REEMPLAZA ESTAS CLAVES CON LAS TUYAS!!
+// ===============================================
+const SUPABASE_URL = 'TU_URL_DE_SUPABASE'; 
+const SUPABASE_ANON_KEY = 'TU_CLAVE_ANON_DE_SUPABASE';
 
-// CORRECCIÓN: Usamos window.supabase para evitar el error de sincronización (createClient is not defined)
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY); 
+const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-const form = document.getElementById('productForm');
-const mensaje = document.getElementById('mensaje');
-const submitBtn = document.getElementById('submitBtn');
-const productList = document.getElementById('productList');
-const loadingMessage = document.getElementById('loadingMessage');
+// Variable para guardar los valores originales al entrar en modo edición
+const originalValues = {};
 
-const BUCKET_NAME = 'imagenes-catalogo-base-480102'; 
+// ===============================================
+// 2. FUNCIONES DE UTILIDAD
+// ===============================================
 
-form.addEventListener('submit', handleFormSubmit);
-
-// 🔄 Inicialización: Cargar productos al iniciar la página
-fetchProducts(); 
-
-// *******************************************************************
-// 🛠️ FUNCIÓN DE CREACIÓN (CREATE)
-// *******************************************************************
-
-async function handleFormSubmit(event) {
-    event.preventDefault();
+/** Muestra mensajes de estado (éxito o error) */
+function showMessage(msg, type) {
+    const messageElement = document.getElementById('message');
+    messageElement.textContent = msg;
+    messageElement.className = `message ${type}`;
     
-    submitBtn.disabled = true;
-    mensaje.className = 'message';
-    mensaje.textContent = 'Guardando producto y subiendo imagen...';
-
-    const nombre = document.getElementById('nombre').value;
-    const precio = document.getElementById('precio').value;
-    const stock = document.getElementById('stock').value;
-    const imagenFile = document.getElementById('imagen').files[0];
-    
-    // Generar ruta única para evitar colisiones
-    const filePath = `public/${Date.now()}-${nombre.replace(/\s/g, '_')}-${imagenFile.name.replace(/\s/g, '_')}`;
-    
-    try {
-        // 1. SUBIR LA IMAGEN A SUPABASE STORAGE
-        const { data: uploadData, error: storageError } = await supabase.storage
-             .from(BUCKET_NAME)
-             .upload(filePath, imagenFile);
-
-        if (storageError) {
-             console.error("Error de Subida a Storage:", storageError);
-             throw new Error(`❌ Storage Falló: ${storageError.message}`); 
-        }
-
-        // 2. OBTENER LA URL PÚBLICA
-        const { data: publicURLData } = supabase.storage
-            .from(BUCKET_NAME)
-            .getPublicUrl(filePath);
-        
-        const url_imagen = publicURLData.publicUrl;
-
-        // 3. GUARDAR LOS DATOS EN LA TABLA 'productos'
-        const { error: dbError } = await supabase
-            .from('productos')
-            .insert([
-                { 
-                    nombre: nombre, 
-                    precio: parseFloat(precio), 
-                    stock: parseInt(stock), 
-                    url_imagen: url_imagen 
-                }
-            ]);
-
-        if (dbError) {
-             console.error("Error de Inserción DB:", dbError);
-             throw new Error(`❌ Base de Datos Falló: ${dbError.message}`);
-        }
-
-        // Éxito
-        mensaje.textContent = `✅ Producto "${nombre}" guardado con éxito.`;
-        mensaje.className = 'message success';
-        form.reset();
-
-        // Actualizar la lista después de crear un producto
-        fetchProducts(); 
-
-    } catch (error) {
-        // Manejo de errores 
-        console.error('Error General de Operación:', error); 
-        
-        let displayMessage = error.message || "Error desconocido. Revisa la Consola (F12).";
-        
-        mensaje.textContent = `🚨 Falló la operación: ${displayMessage}`;
-        mensaje.className = 'message error';
-    } finally {
-        submitBtn.disabled = false;
-    }
+    // Limpiar el mensaje después de 5 segundos
+    setTimeout(() => {
+        messageElement.textContent = '';
+        messageElement.className = 'message';
+    }, 5000);
 }
 
-// *******************************************************************
-// 👁️ FUNCIONES DE LECTURA Y VISUALIZACIÓN (READ)
-// *******************************************************************
-// CÓDIGO CORREGIDO PARA LA LECTURA (SELECT)
-async function fetchProducts() {
-    loadingMessage.textContent = 'Cargando productos...';
-    
-    // Quitamos .order('id', ...) para evitar el error de columna inexistente
-    const { data, error } = await supabase
+// ===============================================
+// 3. CRUD: READ (LEER / OBTENER PRODUCTOS)
+// ===============================================
+
+/** Obtiene los productos de Supabase y los renderiza en la tabla */
+async function renderProducts() {
+    const { data: productos, error } = await supabase
         .from('productos')
-        .select('*'); 
+        .select('*')
+        .order('nombre', { ascending: true }); // Ordena por nombre
 
     if (error) {
         console.error('Error al cargar productos:', error.message);
-        loadingMessage.textContent = `Error al cargar productos: ${error.message}`; 
+        showMessage('Error al cargar productos: ' + error.message, 'error');
         return;
     }
 
-    loadingMessage.style.display = 'none'; 
-    renderProducts(data);
-}
-function renderProducts(products) {
-    if (products.length === 0) {
-        productList.innerHTML = '<p>No hay productos en el inventario.</p>';
-        return;
-    }
-
-    let html = '<table><thead><tr><th>Nombre</th><th>Precio</th><th>Stock</th><th>Imagen</th><th>Acciones</th></tr></thead><tbody>';
+    const productListDiv = document.getElementById('productList');
     
-    products.forEach(product => {
-        // CORRECCIÓN: Usamos 'nombre' como identificador único (data-id) para Editar/Eliminar
+    if (!productos || productos.length === 0) {
+        productListDiv.innerHTML = '<p class="message success">No hay productos registrados.</p>';
+        return;
+    }
+
+    // Construcción de la tabla
+    let html = `
+        <table>
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Precio</th>
+                    <th>Stock</th>
+                    <th>Categoría</th> 
+                    <th>Imagen</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+    `;
+    
+    productos.forEach(product => {
+        // 🚨 IMPORTANTE: Usamos el 'nombre' como data-id para las operaciones de CRUD
+        // 💡 Añadimos data-label para que el modo responsive del CSS funcione
         html += `
             <tr data-id="${product.nombre}">
-                <td><span class="editable" data-field="nombre">${product.nombre}</span></td>
-                <td>$<span class="editable" data-field="precio">${product.precio}</span></td>
-                <td><span class="editable" data-field="stock">${product.stock}</span></td>
-                <td><img src="${product.url_imagen}" alt="${product.nombre}" style="width: 50px; height: auto;"></td>
-                <td>
+                <td data-label="Nombre:"><span class="editable" data-field="nombre">${product.nombre}</span></td>
+                <td data-label="Precio:">$<span class="editable" data-field="precio">${product.precio}</span></td>
+                <td data-label="Stock:"><span class="editable" data-field="stock">${product.stock}</span></td>
+                <td data-label="Categoría:"><span class="editable" data-field="categoria">${product.categoria}</span></td>
+                <td data-label="Imagen:"><img src="${product.url_imagen}" alt="${product.nombre}" style="width: 50px; height: auto;"></td>
+                <td data-label="Acciones:">
                     <button class="edit-btn" data-id="${product.nombre}">Editar</button>
                     <button class="delete-btn" data-id="${product.nombre}">Eliminar</button>
                     <button class="save-btn" data-id="${product.nombre}" style="display:none;">Guardar</button>
@@ -142,23 +86,188 @@ function renderProducts(products) {
             </tr>
         `;
     });
+    
+    html += `
+            </tbody>
+        </table>
+    `;
 
-    html += '</tbody></table>';
-    productList.innerHTML = html;
-    
-    // Añadir listeners para los nuevos botones
-    document.querySelectorAll('.delete-btn').forEach(button => {
-        button.addEventListener('click', (e) => deleteProduct(e.target.dataset.id));
-    });
-    
-    document.querySelectorAll('.edit-btn').forEach(button => {
-        button.addEventListener('click', startEditMode);
+    productListDiv.innerHTML = html;
+    attachEventListeners(); // Adjunta listeners a los nuevos botones
+}
+
+// ===============================================
+// 4. CRUD: CREATE (AGREGAR PRODUCTOS)
+// ===============================================
+
+async function addProduct() {
+    const productName = document.getElementById('productName').value.trim();
+    const price = parseFloat(document.getElementById('price').value);
+    const stock = parseInt(document.getElementById('stock').value);
+    const urlImagen = document.getElementById('urlImagen').value.trim();
+    const categoria = document.getElementById('categoria').value; // <-- NUEVA LÍNEA
+
+    // Validación básica de formulario
+    if (!productName || isNaN(price) || isNaN(stock) || !urlImagen || !categoria) {
+        showMessage('Por favor, completa todos los campos y selecciona una categoría.', 'error');
+        return;
+    }
+
+    const { error } = await supabase
+        .from('productos')
+        .insert([
+            { 
+                nombre: productName, 
+                precio: price, 
+                stock: stock, 
+                url_imagen: urlImagen,
+                categoria: categoria // <-- ENVÍO DE LA CATEGORÍA
+            }
+        ]);
+
+    if (error) {
+        console.error('Error al agregar producto:', error.message);
+        showMessage(`Fallo al agregar producto: ${error.message}`, 'error');
+        return;
+    }
+
+    showMessage('✅ Producto agregado correctamente.', 'success');
+    document.getElementById('productForm').reset(); // Limpia el formulario
+    renderProducts(); // Vuelve a cargar la lista
+}
+
+// Escucha el evento submit del formulario de agregar
+document.getElementById('productForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    addProduct();
+});
+
+// ===============================================
+// 5. CRUD: UPDATE (EDITAR PRODUCTOS)
+// ===============================================
+
+/** Inicia el modo de edición para una fila */
+function startEditMode(row) {
+    const productName = row.dataset.id;
+    const editBtn = row.querySelector('.edit-btn');
+    const deleteBtn = row.querySelector('.delete-btn');
+    const saveBtn = row.querySelector('.save-btn');
+    const cancelBtn = row.querySelector('.cancel-btn');
+
+    editBtn.style.display = 'none';
+    deleteBtn.style.display = 'none';
+    saveBtn.style.display = 'inline-block';
+    cancelBtn.style.display = 'inline-block';
+
+    // 2. Habilitar edición y guardar valores originales
+    row.querySelectorAll('.editable').forEach(span => {
+        const field = span.dataset.field;
+        
+        // ⚠️ Solo hacemos editables PRECIO y STOCK. 
+        // El nombre (identificador) y la categoría se mantienen fijos para evitar problemas de RLS/Filtrado.
+        if (field === 'nombre' || field === 'categoria') {
+            originalValues[productName + field] = span.textContent;
+            return; // Salta al siguiente elemento sin crear un input
+        }
+        
+        originalValues[productName + field] = span.textContent; 
+        
+        const input = document.createElement('input');
+        input.type = (field === 'precio' || field === 'stock') ? 'number' : 'text'; 
+        input.value = span.textContent.replace('$', ''); // Remueve el signo $ para edición de precio
+        input.dataset.field = field; 
+        
+        span.replaceWith(input);
     });
 }
 
-// *******************************************************************
-// ❌ FUNCIÓN DE ELIMINACIÓN (DELETE)
-// *******************************************************************
+/** Guarda los cambios editados en Supabase */
+async function saveEdit(row) {
+    const productName = row.dataset.id;
+    const updateData = {};
+    let hasChanged = false;
+
+    // 1. Recoger nuevos valores
+    row.querySelectorAll('input').forEach(input => {
+        const field = input.dataset.field;
+        let newValue = input.value;
+        let originalValue = originalValues[productName + field];
+
+        if (field === 'precio' || field === 'stock') {
+            newValue = parseFloat(newValue);
+            originalValue = parseFloat(originalValue);
+        }
+        
+        if (newValue !== originalValue) {
+            updateData[field] = newValue;
+            hasChanged = true;
+        }
+    });
+
+    if (!hasChanged) {
+        showMessage('No se realizaron cambios.', 'error');
+        endEditMode(row, true); // Vuelve al modo normal sin actualizar
+        return;
+    }
+
+    // 2. Enviar a Supabase
+    const { error } = await supabase
+        .from('productos')
+        .update(updateData)
+        .eq('nombre', productName); // Filtramos por el nombre original
+
+    if (error) {
+        console.error('Error al actualizar producto:', error.message);
+        showMessage(`Fallo al actualizar: ${error.message}`, 'error');
+        endEditMode(row, true); // Finaliza con los valores originales
+        return;
+    }
+
+    showMessage('✅ Producto actualizado correctamente.', 'success');
+    renderProducts(); // Recarga para reflejar los cambios (incluido el formato de precio)
+}
+
+/** Cancela la edición o finaliza el modo edición */
+function endEditMode(row, useOriginalValues = false) {
+    const productName = row.dataset.id;
+    
+    // 1. Reemplazar inputs con spans y restaurar botones
+    row.querySelectorAll('input').forEach(input => {
+        const field = input.dataset.field;
+        
+        const span = document.createElement('span');
+        span.className = 'editable';
+        span.dataset.field = field;
+        
+        // Determinar el contenido: valor original o valor del input (si se guardó)
+        let content = useOriginalValues ? originalValues[productName + field] : input.value;
+        
+        // Restaurar formato de precio si aplica
+        if (field === 'precio' && content && !isNaN(parseFloat(content))) {
+            span.textContent = `$${parseFloat(content).toFixed(2)}`;
+        } else {
+            span.textContent = content;
+        }
+
+        input.replaceWith(span);
+    });
+    
+    // 2. Restaurar botones
+    const editBtn = row.querySelector('.edit-btn');
+    const deleteBtn = row.querySelector('.delete-btn');
+    const saveBtn = row.querySelector('.save-btn');
+    const cancelBtn = row.querySelector('.cancel-btn');
+
+    editBtn.style.display = 'inline-block';
+    deleteBtn.style.display = 'inline-block';
+    saveBtn.style.display = 'none';
+    cancelBtn.style.display = 'none';
+}
+
+
+// ===============================================
+// 6. CRUD: DELETE (ELIMINAR PRODUCTOS)
+// ===============================================
 
 async function deleteProduct(productName) {
     if (!confirm(`¿Estás seguro de que quieres eliminar el producto: ${productName}?`)) {
@@ -168,7 +277,7 @@ async function deleteProduct(productName) {
     const { error } = await supabase
         .from('productos')
         .delete()
-        .eq('nombre', productName); // CORRECCIÓN: Filtramos por la columna 'nombre'
+        .eq('nombre', productName); // Filtramos por la columna 'nombre'
 
     if (error) {
         console.error('Error al eliminar producto:', error.message);
@@ -176,111 +285,36 @@ async function deleteProduct(productName) {
         return;
     }
 
-    // Actualizar la lista después de eliminar
-    alert(`✅ Producto "${productName}" eliminado con éxito.`);
-    fetchProducts();
+    showMessage(`🗑️ Producto "${productName}" eliminado correctamente.`, 'success');
+    renderProducts(); // Vuelve a cargar la lista
 }
 
 
-// *******************************************************************
-// ✏️ FUNCIONES DE EDICIÓN (UPDATE)
-// *******************************************************************
+// ===============================================
+// 7. LISTENERS Y EJECUCIÓN INICIAL
+// ===============================================
 
-let originalValues = {};
-
-function startEditMode(e) {
-    const row = e.target.closest('tr');
-    const productName = row.dataset.id;
-    
-    // 1. Mostrar/Ocultar botones
-    row.querySelector('.edit-btn').style.display = 'none';
-    row.querySelector('.delete-btn').style.display = 'none';
-    row.querySelector('.save-btn').style.display = 'inline-block';
-    row.querySelector('.cancel-btn').style.display = 'inline-block';
-
-    // 2. Habilitar edición y guardar valores originales
-  // 2. Habilitar edición y guardar valores originales
-row.querySelectorAll('.editable').forEach(span => {
-    const field = span.dataset.field;
-    
-    // AÑADIMOS ESTA CONDICIÓN CLAVE: Si el campo es 'nombre', no lo hacemos editable
-    if (field === 'nombre') {
-        return; // Salta al siguiente elemento sin crear un input
-    }
-    
-    originalValues[productName + field] = span.textContent; 
-    
-    const input = document.createElement('input');
-    // Si llegamos aquí, solo puede ser 'precio' o 'stock'
-    input.type = 'number'; 
-    input.value = span.textContent;
-    input.dataset.field = field; 
-    
-    span.replaceWith(input);
-});
-    
-    // 3. Añadir listener de Guardar
-    row.querySelector('.save-btn').addEventListener('click', () => saveChanges(productName, row));
-    row.querySelector('.cancel-btn').addEventListener('click', () => cancelEdit(row, productName));
-}
-
-function cancelEdit(row, productName) {
-    row.querySelectorAll('input').forEach(input => {
-        const span = document.createElement('span');
-        span.className = 'editable';
-        span.dataset.field = input.dataset.field;
-        span.textContent = originalValues[productName + input.dataset.field]; // Restaurar valor
-        input.replaceWith(span);
-    });
-    
-    // Ocultar/Mostrar botones
-    row.querySelector('.edit-btn').style.display = 'inline-block';
-    row.querySelector('.delete-btn').style.display = 'inline-block';
-    row.querySelector('.save-btn').style.display = 'none';
-    row.querySelector('.cancel-btn').style.display = 'none';
-}
-
-
-async function saveChanges(productName, row) {
-    let updates = {};
-    let hasChanges = false;
-    
-    row.querySelectorAll('input').forEach(input => {
-        const field = input.dataset.field;
-        let newValue = input.value;
-        
-        // Convertir tipos de dato
-        if (field === 'precio') {
-            newValue = parseFloat(newValue);
-        } else if (field === 'stock') {
-            newValue = parseInt(newValue);
-        }
-
-        // Comprobar si realmente hubo un cambio
-        if (newValue !== originalValues[productName + field]) {
-            updates[field] = newValue;
-            hasChanges = true;
-        }
+/** Adjunta los listeners de los botones de la tabla */
+function attachEventListeners() {
+    document.querySelectorAll('.edit-btn').forEach(btn => {
+        btn.onclick = (e) => startEditMode(e.target.closest('tr'));
     });
 
-    if (!hasChanges) {
-        alert("No se detectaron cambios.");
-        cancelEdit(row, productName);
-        return;
-    }
+    document.querySelectorAll('.save-btn').forEach(btn => {
+        btn.onclick = (e) => saveEdit(e.target.closest('tr'));
+    });
 
-    const { error } = await supabase
-        .from('productos')
-        .update(updates)
-        .eq('nombre', productName); // CORRECCIÓN: Filtramos por la columna 'nombre'
+    document.querySelectorAll('.cancel-btn').forEach(btn => {
+        btn.onclick = (e) => endEditMode(e.target.closest('tr'), true);
+    });
 
-    if (error) {
-        console.error('Error al actualizar producto:', error.message);
-        alert(`Fallo al actualizar: ${error.message}`);
-        return;
-    }
-
-    alert('✅ Producto actualizado con éxito.');
-    // Recargar la lista para que refleje los cambios (ej: si se cambió el 'nombre')
-    fetchProducts();
+    document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.onclick = (e) => {
+            const productName = e.target.dataset.id;
+            deleteProduct(productName);
+        };
+    });
 }
+
+// Carga los productos al iniciar la página
+document.addEventListener('DOMContentLoaded', renderProducts);

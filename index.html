@@ -4,28 +4,30 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Mega Distribuidora - Tu Mayorista de Confianza</title>
-    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="index.css"> 
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <header class="main-header">
         <div class="logo">
-            <h1>Megadistribuidora</h1>
+            <h1>Mega<span class="highlight">Distribuidora</span></h1>
         </div>
 
         <nav class="main-nav">
             <button class="menu-btn" id="menuBtn" aria-label="Menú Principal">
-                <span></span>
-                <span></span>
-                <span></span>
+                <span></span><span></span><span></span>
             </button>
             <ul class="nav-links" id="navLinks">
                 <li><a href="#home">Inicio</a></li>
-                <li><a href="carrito.html">Todos los Productos</a></li>
+                <li><a href="carrito.html">Productos</a></li>
                 <li><a href="#categorias">Categorías</a></li>
+                
                 <li>
                     <a href="https://wa.me/573174420752" target="_blank" class="whatsapp-link" aria-label="WhatsApp">
-                        <img src="whatsapp.png" alt="WhatsApp Icono" style="height: 30px;">
+                        <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                           <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm3.33 14.17c-.12.3-.47.45-.77.3a4.28 4.28 0 0 1-5.6-3.8c0-.3.15-.65.45-.77.12-.05.25-.07.38-.07h.05c.2 0 .4.1.5.3.1.2.2.4.3.5.3.6.7 1.2 1.2 1.5.1.1.2.1.3.1.2 0 .4-.1.6-.2.1-.1.2-.2.4-.4.2-.2.4-.3.6-.4.4-.3.8-.5 1.2-.6.2-.1.4-.1.6 0 .3.1.5.3.6.5.1.2.1.4 0 .6-.1.2-.2.4-.3.6-.1.2-.2.4-.3.6zM12 3.6c-4.63 0-8.4 3.77-8.4 8.4 0 1.95.66 3.74 1.77 5.14L3.6 20.4l3.19-1.07c1.3.74 2.8 1.17 4.7 1.17 4.63 0 8.4-3.77 8.4-8.4S16.63 3.6 12 3.6zm4.7 9.8c-.3-.15-.6-.3-.9-.4-.3-.1-.6-.2-.9-.3-.3-.1-.6-.2-.9-.3-.3-.1-.6-.1-.9-.1-.3 0-.6.1-.9.2-.3.1-.6.2-.9.3-.3.1-.6.3-.9.4-.3.1-.6.3-.9.4-.3.1-.6.3-.9.4-.3.1-.6.3-.9.4-.3.1-.6.3-.9.4-.3.1-.6.3-.9.4-.3.1-.6.3-.9.4-.3.1-.6.3-.9.4z" />
+                        </svg>
                     </a>
                 </li>
             </ul>
@@ -36,38 +38,38 @@
         
         <section class="hero-banner" id="home">
             <div class="hero-content">
-                <h2 class="animate-in">Bienvenido a MegaDistribuidora</h2>
-                <p class="animate-in delay-1">Productos de Calidad al Mejor Precio en Popayán, Cauca.</p>
-                <a href="carrito.html" class="btn-primary animate-in delay-2">
-                    <button class="btn-comprar1">Explora Todos los Productos</button>
-                </a>
+                <h2 class="animate-in">Distribución Mayorista <span class="highlight">Confiable</span> y Ágil</h2>
+                <p class="animate-in delay-1">Productos de Calidad, Precios Competitivos y Servicio Excepcional en Popayán, Cauca.</p>
+                <a href="carrito.html" class="btn-primary animate-in delay-2">Explora Nuestros Productos</a>
             </div>
-            <img src="logo.jpeg" alt="Imagen de presentación de MegaDistribuidora" class="hero-image animate-fade">
+            <div class="hero-image-container animate-fade">
+                <img src="logo.jpeg" alt="Imagen de presentación de MegaDistribuidora">
+            </div>
         </section>
 
-        <section class="categorias-destacadas" id="categorias">
-            <h2 class="section-title animate-in">Nuestras Categorías</h2>
+        <section class="categorias-destacadas section-padding" id="categorias">
+            <h2 class="section-title animate-in">Descubre Nuestras Categorías</h2>
             <div class="categorias-carousel">
-                <button class="cat-btn prev" aria-label="Categoría Anterior">&#10094;</button>
+                <button class="cat-btn prev" aria-label="Categoría Anterior" data-direction="prev">&#10094;</button>
                 <div class="categorias-track">
-                    <div class="categoria-card animate-fade delay-3"><a href="cuidadoparapiel.html"><img src="piel.jpeg" alt="Cuidado Piel"><div class="cat-nombre">cuidado para la piel</div></a></div>
-                    <div class="categoria-card animate-fade delay-4"><a href="cuidadopersonal.html"><img src="personal.jpg" alt="Cuidado Personal"><div class="cat-nombre">cuidado personal</div></a></div>
-                    <div class="categoria-card animate-fade delay-5"><a href="insumosmedicos.html"><img src="medicos.jpeg" alt="Insumos Médicos"><div class="cat-nombre">insumos medicos</div></a></div>
-                    <div class="categoria-card animate-fade delay-6"><a href="maquillaje.html"><img src="maquillage.jpeg" alt="Maquillaje"><div class="cat-nombre">maquillaje</div></a></div>
-                    <div class="categoria-card animate-fade delay-7"><a href="medicamentos.html"><img src="medicamentos.jpeg" alt="Medicamentos"><div class="cat-nombre">medicamentos</div></a></div>
-                    <div class="categoria-card animate-fade delay-8"><a href="u.i.html"><img src="ui.jpeg" alt="U.I"><div class="cat-nombre">u.i</div></a></div>
-                    <div class="categoria-card animate-fade delay-9"><a href="drogablanca.html"><img src="medicamentosbs.jpeg" alt="Droga Blanca"><div class="cat-nombre">droga blanca</div></a></div>
-                    <div class="categoria-card animate-fade delay-10"><a href="carrito.html"><img src="todas.jpeg" alt="Todas las categorías"><div class="cat-nombre">Todas</div></a></div>
+                    <div class="categoria-card animate-fade delay-3" data-category="piel"><a href="cuidadoparapiel.html"><img src="cuidadoparapiel.jpg" alt="Cuidado Piel"><div class="cat-nombre">Cuidado para la Piel</div></a></div>
+                    <div class="categoria-card animate-fade delay-4" data-category="personal"><a href="cuidadopersonal.html"><img src="cuidadopersonal.jpg" alt="Cuidado Personal"><div class="cat-nombre">Cuidado Personal</div></a></div>
+                    <div class="categoria-card animate-fade delay-5" data-category="medicos"><a href="insumosmedicos.html"><img src="medicos.jpg" alt="Insumos Médicos"><div class="cat-nombre">Insumos Médicos</div></a></div>
+                    <div class="categoria-card animate-fade delay-6" data-category="maquillaje"><a href="maquillaje.html"><img src="maquillage.jpg" alt="Maquillaje"><div class="cat-nombre">Maquillaje</div></a></div>
+                    <div class="categoria-card animate-fade delay-7" data-category="medicamentos"><a href="medicamentos.html"><img src="medicamentos.jpg" alt="Medicamentos"><div class="cat-nombre">Medicamentos</div></a></div>
+                    <div class="categoria-card animate-fade delay-8" data-category="ui"><a href="u.i.html"><img src="u.i.jpg" alt="U.I"><div class="cat-nombre">U.I.</div></a></div>
+                    <div class="categoria-card animate-fade delay-9" data-category="drogablanca"><a href="drogablanca.html"><img src="blanca.jpg" alt="Droga Blanca"><div class="cat-nombre">Droga Blanca</div></a></div>
+                    <div class="categoria-card animate-fade delay-10" data-category="all"><a href="carrito.html"><img src="todas.jpeg" alt="Todas las categorías"><div class="cat-nombre">Todas las Categorías</div></a></div>
                 </div>
-                <button class="cat-btn next" aria-label="Categoría Siguiente">&#10095;</button>
+                <button class="cat-btn next" aria-label="Categoría Siguiente" data-direction="next">&#10095;</button>
             </div>
         </section>
 
-        <section class="nosotros-info" id="nosotros">
-            <h2 class="section-title animate-in">Sobre Nosotros</h2>
+        <section class="nosotros-info section-padding" id="nosotros">
+            <h2 class="section-title animate-in">Quiénes Somos</h2>
             <div class="nosotros-content">
-                <p class="animate-in delay-1">En Megadistribuidora, nos dedicamos a ser tu aliado confiable, ofreciendo una amplia gama de productos de alta calidad a precios competitivos. Nuestra misión es superar tus expectativas con un servicio ágil y personalizado, asegurando que cada cliente reciba la atención que merece.</p>
-                <p class="animate-in delay-2">Visualizamos un futuro donde MegaDistribuidora sea sinónimo de excelencia e innovación en el sector, expandiendo nuestro alcance y fortaleciendo la confianza de nuestros socios comerciales y comunidades, siempre con la convicción de un crecimiento sostenible y con propósito.</p>
+                <p class="animate-in delay-1">En **MegaDistribuidora**, somos tu aliado estratégico, dedicados a ofrecer una amplia gama de productos de alta calidad. Nuestro compromiso es garantizar **precios competitivos** y un servicio ágil y personalizado, superando las expectativas de cada uno de nuestros clientes en Popayán y el Cauca.</p>
+                <p class="animate-in delay-2">Trabajamos con visión de futuro, buscando ser sinónimo de **excelencia e innovación** en el sector mayorista. Fortalecemos la confianza de nuestros socios comerciales a través de un crecimiento sostenible y enfocado en el propósito de ser el distribuidor líder en la región.</p>
             </div>
         </section>
         
@@ -77,40 +79,47 @@
 
         <div class="beneficios-footer">
             <div class="beneficio-item animate-in">
-                <img src="atencion.png" alt="Atención al cliente" class="beneficio-icon">
-                <div class="beneficio-texto">Atención al <br>cliente</div>
+                <svg viewBox="0 0 24 24" width="40" height="40" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                <div class="beneficio-texto">Atención al <br>Cliente</div>
             </div>
             <div class="beneficio-item animate-in delay-1">
-                <img src="envios.png" alt="Rapidez de Envíos" class="beneficio-icon">
-                <div class="beneficio-texto">Hacemos envios</div>
+                <svg viewBox="0 0 24 24" width="40" height="40" fill="currentColor"><path d="M20 8h-3V4H7v4H4v10h16V8zm-6 10h-4v-4h4v4zm1-8V6h4v2h-4zM9 6h4v2H9V6z"/></svg>
+                <div class="beneficio-texto">Envíos Rápidos y <br>Confiables</div>
             </div>
             <div class="beneficio-item animate-in delay-2">
-                <img src="medios de pago.png" alt="Todos los medios de pago" class="beneficio-icon">
-                <div class="beneficio-texto">Todos los medios<br>de pago</div>
+                <svg viewBox="0 0 24 24" width="40" height="40" fill="currentColor"><path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4V8h16v10zm-3-8V6H7v2h10z"/></svg>
+                <div class="beneficio-texto">Múltiples <br>Medios de Pago</div>
             </div>
         </div>
 
         <div class="footer-grid-container">
             <div class="footer-contact-info animate-in">
-                <h3>Contáctanos</h3>
-                <p>Ciudad: Popayán, Cauca, Colombia</p>
-                <p>Teléfono: +57 317 4420752</p>
-                <p>Email: megadistribuidora68@gmail.com</p>
+                <h3>Contacto</h3>
+                <p>📍 Popayán, Cauca, Colombia</p>
+                <p>📞 +57 317 4420752</p>
+                <p>📧 megadistribuidora68@gmail.com</p>
             </div>
             
             <form class="footer-form animate-in delay-1" id="footerEmailForm">
+                <h3 class="form-title">Envíanos un Mensaje</h3>
                 <input type="email" placeholder="Tu correo electrónico" required>
-                <textarea placeholder="Escribe tu mensaje" required></textarea>
-                <button type="submit" class="btn-comprar">Enviar</button>
+                <textarea placeholder="Escribe tu consulta" required></textarea>
+                <button type="submit" class="btn-secondary">Enviar Mensaje</button>
+                <div id="formStatus" class="form-status"></div>
             </form>
 
             <div class="admin-link animate-fade delay-2">
-                <a href="seccion.html" aria-label="Acceso a Administración">
-                    <img src="administrador.jpeg" alt="Logo Administración">
+                <a href="seccion.html" aria-label="Acceso a Administración" title="Acceso de Administrador">
+                    <svg viewBox="0 0 24 24" width="60" height="60" fill="white"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
                 </a>
+                <p class="admin-text">Área Administrativa</p>
             </div>
         </div>
         
+        <div class="footer-bottom">
+            <p>&copy; 2025 MegaDistribuidora. Todos los derechos reservados.</p>
+        </div>
+
     </footer>
 
     <script src="index.js"></script>
