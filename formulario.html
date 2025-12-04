@@ -41,9 +41,10 @@
                     <option value="droga_blanca">Droga Blanca</option>
                 </select>
             </div>
+
             <div class="form-group">
-                <label for="urlImagen">URL de Imagen (Link):</label>
-                <input type="text" id="urlImagen" name="urlImagen" required>
+                <label for="imagenFile">Imagen del Producto (Archivo):</label>
+                <input type="file" id="imagenFile" name="imagenFile" accept="image/*" required> 
             </div>
             
             <button type="submit">Agregar Producto</button>
@@ -54,6 +55,14 @@
 
     <div class="product-list-container">
         <h2>Listado de Productos</h2>
+        <div id="productList">
+            </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="formulario.js"></script>
+</body>
+</html>tado de Productos</h2>
         <div id="productList">
             </div>
     </div>

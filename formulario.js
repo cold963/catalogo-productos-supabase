@@ -1,11 +1,13 @@
 // ===============================================
-// 1. CONFIGURACIÓN DE SUPABASE
-// ¡¡REEMPLAZA ESTAS CLAVES CON LAS TUYAS!!
+// 1. CONFIGURACIÓN DE SUPABASE (CON TUS CLAVES)
 // ===============================================
-const SUPABASE_URL = 'TU_URL_DE_SUPABASE'; 
-const SUPABASE_ANON_KEY = 'TU_CLAVE_ANON_DE_SUPABASE';
+const SUPABASE_URL = 'https://jmccyspvktlcywffqtlk.supabase.co'; 
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImptY2N5c3B2a3RsY3l3ZmZxdGxrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ3MjA3NjUsImV4cCI6MjA4MDI5Njc2NX0.2nw0wSS3JZ9c0i9lEB76JIxHZhSyFnN9o1IhWu2myZg';
 
 const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// 🚀 Bucket de almacenamiento. ¡Asegúrate de que este nombre sea correcto!
+const STORAGE_BUCKET_NAME = 'imagenes-productos'; 
 
 // Variable para guardar los valores originales al entrar en modo edición
 const originalValues = {};
@@ -20,7 +22,6 @@ function showMessage(msg, type) {
     messageElement.textContent = msg;
     messageElement.className = `message ${type}`;
     
-    // Limpiar el mensaje después de 5 segundos
     setTimeout(() => {
         messageElement.textContent = '';
         messageElement.className = 'message';
@@ -36,7 +37,7 @@ async function renderProducts() {
     const { data: productos, error } = await supabase
         .from('productos')
         .select('*')
-        .order('nombre', { ascending: true }); // Ordena por nombre
+        .order('nombre', { ascending: true });
 
     if (error) {
         console.error('Error al cargar productos:', error.message);
@@ -51,7 +52,6 @@ async function renderProducts() {
         return;
     }
 
-    // Construcción de la tabla
     let html = `
         <table>
             <thead>
@@ -68,8 +68,6 @@ async function renderProducts() {
     `;
     
     productos.forEach(product => {
-        // 🚨 IMPORTANTE: Usamos el 'nombre' como data-id para las operaciones de CRUD
-        // 💡 Añadimos data-label para que el modo responsive del CSS funcione
         html += `
             <tr data-id="${product.nombre}">
                 <td data-label="Nombre:"><span class="editable" data-field="nombre">${product.nombre}</span></td>
@@ -93,27 +91,63 @@ async function renderProducts() {
     `;
 
     productListDiv.innerHTML = html;
-    attachEventListeners(); // Adjunta listeners a los nuevos botones
+    attachEventListeners();
 }
 
 // ===============================================
-// 4. CRUD: CREATE (AGREGAR PRODUCTOS)
+// 4. CRUD: CREATE (AGREGAR PRODUCTOS CON SUBIDA)
 // ===============================================
 
 async function addProduct() {
+    // 1. Recoger datos del formulario
     const productName = document.getElementById('productName').value.trim();
     const price = parseFloat(document.getElementById('price').value);
     const stock = parseInt(document.getElementById('stock').value);
-    const urlImagen = document.getElementById('urlImagen').value.trim();
-    const categoria = document.getElementById('categoria').value; // <-- NUEVA LÍNEA
+    const categoria = document.getElementById('categoria').value;
+    const imagenFile = document.getElementById('imagenFile').files[0];
 
-    // Validación básica de formulario
-    if (!productName || isNaN(price) || isNaN(stock) || !urlImagen || !categoria) {
-        showMessage('Por favor, completa todos los campos y selecciona una categoría.', 'error');
+    // Validación
+    if (!productName || isNaN(price) || isNaN(stock) || !imagenFile || !categoria) {
+        showMessage('Por favor, completa todos los campos y selecciona una imagen y categoría.', 'error');
+        return;
+    }
+    
+    // Deshabilitar botón para evitar doble subida
+    const submitButton = document.querySelector('#productForm button[type="submit"]');
+    submitButton.disabled = true;
+    submitButton.textContent = 'Subiendo...';
+
+
+    // ===============================================
+    // 2. SUBIR LA IMAGEN A SUPABASE STORAGE
+    // ===============================================
+    const fileExtension = imagenFile.name.split('.').pop();
+    // Nombre de archivo único: NombreProducto_Timestamp.ext
+    const filePath = `${productName.toLowerCase().replace(/\s/g, '_')}_${Date.now()}.${fileExtension}`;
+    
+    const { error: uploadError } = await supabase.storage
+        .from(STORAGE_BUCKET_NAME)
+        .upload(filePath, imagenFile);
+
+    if (uploadError) {
+        console.error('Error al subir imagen:', uploadError.message);
+        showMessage(`Fallo al subir imagen: ${uploadError.message}`, 'error');
+        submitButton.disabled = false;
+        submitButton.textContent = 'Agregar Producto';
         return;
     }
 
-    const { error } = await supabase
+    // 3. Obtener la URL pública de la imagen
+    const { data: publicUrlData } = supabase.storage
+        .from(STORAGE_BUCKET_NAME)
+        .getPublicUrl(filePath);
+
+    const urlImagen = publicUrlData.publicUrl;
+
+    // ===============================================
+    // 4. GUARDAR EL REGISTRO EN LA TABLA DE PRODUCTOS
+    // ===============================================
+    const { error: insertError } = await supabase
         .from('productos')
         .insert([
             { 
@@ -121,19 +155,23 @@ async function addProduct() {
                 precio: price, 
                 stock: stock, 
                 url_imagen: urlImagen,
-                categoria: categoria // <-- ENVÍO DE LA CATEGORÍA
+                categoria: categoria 
             }
         ]);
 
-    if (error) {
-        console.error('Error al agregar producto:', error.message);
-        showMessage(`Fallo al agregar producto: ${error.message}`, 'error');
+    submitButton.disabled = false;
+    submitButton.textContent = 'Agregar Producto';
+
+    if (insertError) {
+        // Opcional: Si falla la inserción en DB, podrías eliminar el archivo subido.
+        console.error('Error al agregar producto en DB:', insertError.message);
+        showMessage(`Fallo al agregar producto: ${insertError.message}`, 'error');
         return;
     }
 
     showMessage('✅ Producto agregado correctamente.', 'success');
-    document.getElementById('productForm').reset(); // Limpia el formulario
-    renderProducts(); // Vuelve a cargar la lista
+    document.getElementById('productForm').reset();
+    renderProducts();
 }
 
 // Escucha el evento submit del formulario de agregar
@@ -146,7 +184,6 @@ document.getElementById('productForm').addEventListener('submit', function(event
 // 5. CRUD: UPDATE (EDITAR PRODUCTOS)
 // ===============================================
 
-/** Inicia el modo de edición para una fila */
 function startEditMode(row) {
     const productName = row.dataset.id;
     const editBtn = row.querySelector('.edit-btn');
@@ -159,35 +196,30 @@ function startEditMode(row) {
     saveBtn.style.display = 'inline-block';
     cancelBtn.style.display = 'inline-block';
 
-    // 2. Habilitar edición y guardar valores originales
     row.querySelectorAll('.editable').forEach(span => {
         const field = span.dataset.field;
         
-        // ⚠️ Solo hacemos editables PRECIO y STOCK. 
-        // El nombre (identificador) y la categoría se mantienen fijos para evitar problemas de RLS/Filtrado.
         if (field === 'nombre' || field === 'categoria') {
             originalValues[productName + field] = span.textContent;
-            return; // Salta al siguiente elemento sin crear un input
+            return;
         }
         
         originalValues[productName + field] = span.textContent; 
         
         const input = document.createElement('input');
         input.type = (field === 'precio' || field === 'stock') ? 'number' : 'text'; 
-        input.value = span.textContent.replace('$', ''); // Remueve el signo $ para edición de precio
+        input.value = span.textContent.replace('$', ''); 
         input.dataset.field = field; 
         
         span.replaceWith(input);
     });
 }
 
-/** Guarda los cambios editados en Supabase */
 async function saveEdit(row) {
     const productName = row.dataset.id;
     const updateData = {};
     let hasChanged = false;
 
-    // 1. Recoger nuevos valores
     row.querySelectorAll('input').forEach(input => {
         const field = input.dataset.field;
         let newValue = input.value;
@@ -206,32 +238,29 @@ async function saveEdit(row) {
 
     if (!hasChanged) {
         showMessage('No se realizaron cambios.', 'error');
-        endEditMode(row, true); // Vuelve al modo normal sin actualizar
+        endEditMode(row, true);
         return;
     }
 
-    // 2. Enviar a Supabase
     const { error } = await supabase
         .from('productos')
         .update(updateData)
-        .eq('nombre', productName); // Filtramos por el nombre original
+        .eq('nombre', productName); 
 
     if (error) {
         console.error('Error al actualizar producto:', error.message);
         showMessage(`Fallo al actualizar: ${error.message}`, 'error');
-        endEditMode(row, true); // Finaliza con los valores originales
+        endEditMode(row, true); 
         return;
     }
 
     showMessage('✅ Producto actualizado correctamente.', 'success');
-    renderProducts(); // Recarga para reflejar los cambios (incluido el formato de precio)
+    renderProducts();
 }
 
-/** Cancela la edición o finaliza el modo edición */
 function endEditMode(row, useOriginalValues = false) {
     const productName = row.dataset.id;
     
-    // 1. Reemplazar inputs con spans y restaurar botones
     row.querySelectorAll('input').forEach(input => {
         const field = input.dataset.field;
         
@@ -239,10 +268,8 @@ function endEditMode(row, useOriginalValues = false) {
         span.className = 'editable';
         span.dataset.field = field;
         
-        // Determinar el contenido: valor original o valor del input (si se guardó)
         let content = useOriginalValues ? originalValues[productName + field] : input.value;
         
-        // Restaurar formato de precio si aplica
         if (field === 'precio' && content && !isNaN(parseFloat(content))) {
             span.textContent = `$${parseFloat(content).toFixed(2)}`;
         } else {
@@ -252,7 +279,6 @@ function endEditMode(row, useOriginalValues = false) {
         input.replaceWith(span);
     });
     
-    // 2. Restaurar botones
     const editBtn = row.querySelector('.edit-btn');
     const deleteBtn = row.querySelector('.delete-btn');
     const saveBtn = row.querySelector('.save-btn');
@@ -274,10 +300,14 @@ async function deleteProduct(productName) {
         return;
     }
 
+    // Nota: Si quieres eliminar la imagen de Storage también, necesitarías 
+    // guardar el nombre del archivo (no la URL) en la DB y usar supabase.storage.remove().
+    // Por simplicidad, solo eliminamos el registro de la tabla.
+
     const { error } = await supabase
         .from('productos')
         .delete()
-        .eq('nombre', productName); // Filtramos por la columna 'nombre'
+        .eq('nombre', productName);
 
     if (error) {
         console.error('Error al eliminar producto:', error.message);
@@ -286,7 +316,7 @@ async function deleteProduct(productName) {
     }
 
     showMessage(`🗑️ Producto "${productName}" eliminado correctamente.`, 'success');
-    renderProducts(); // Vuelve a cargar la lista
+    renderProducts();
 }
 
 
