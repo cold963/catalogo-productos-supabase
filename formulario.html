@@ -9,7 +9,7 @@
         <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
-    <div class="container">
+    <div class="container">
         <h1>Nuevo Producto 📦</h1>
         <form id="productForm">
             <div class="form-group">
@@ -26,22 +26,35 @@
                 <label for="stock">Stock Disponible:</label>
                 <input type="number" id="stock" min="0" required>
             </div>
-
-            <div class="form-group">
+            
+            <div class="form-group">
+                <label for="categoria">Categoría:</label>
+                <select id="categoria" required>
+                    <option value="" disabled selected>Selecciona una categoría</option>
+                    <option value="cuidado_piel">Cuidado para la Piel</option>
+                    <option value="cuidado_personal">Cuidado Personal</option>
+                    <option value="insumos_medicos">Insumos Médicos</option>
+                    <option value="maquillaje">Maquillaje</option>
+                    <option value="medicamentos">Medicamentos</option>
+                    <option value="u_i">U.I.</option>
+                    <option value="droga_blanca">Droga Blanca</option>
+                </select>
+            </div>
+                        <div class="form-group">
                 <label for="imagen">Imagen del Producto:</label>
                 <input type="file" id="imagen" accept="image/*" required>
             </div>
             
             <button type="submit" id="submitBtn">Guardar Producto</button>
           <p id="mensaje" class="message"></p>
-    </form>
+    </form>
 </div>
 
 <div class="container product-list-container">
-    <h2>Productos en Inventario</h2>
-    <p id="loadingMessage">Cargando productos...</p>
-    <div id="productList">
-        </div>
+    <h2>Productos en Inventario</h2>
+    <p id="loadingMessage">Cargando productos...</p>
+    <div id="productList">
+        </div>
 </div>
 
 <script src="formulario.js" defer></script>
