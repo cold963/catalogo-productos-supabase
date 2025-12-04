@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🛍️ Catálogo de Productos | Tu Tienda</title>
+    <link rel="stylesheet" href="catalogo.css"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+    <header class="main-header">
+        <div class="header-logo">
+            <i class="fas fa-box-open"></i> Catálogo de Productos
+        </div>
+        <div class="header-actions">
+            <span class="user-info"><i class="fas fa-store"></i> Tu Tienda</span>
+            <button id="cart-button" class="cart-button-style" aria-label="Ver Carrito">
+                <i class="fas fa-shopping-cart"></i>
+                <span id="cart-count" class="cart-count">0</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="container">
+        
+        <section class="search-section">
+            <div class="search-container">
+                <input type="text" id="search-input" placeholder="Buscar producto..." onkeyup="filterProducts()">
+                <i class="fas fa-search search-icon"></i>
+            </div>
+        </section>
+
+        <section class="categories-section">
+            <h2>Nuestras Categorías</h2>
+            <div class="category-slider-wrapper">
+                <button class="slider-arrow left-arrow" onclick="scrollCategories(-1)"><i class="fas fa-chevron-left"></i></button>
+                <div class="categories-list" id="categories-list">
+                    
+                    <a href="cuidado_piel.html" class="category-card cat-card-float">
+                        <div class="category-image icon-piel"></div>
+                        <span>Cuidado para la piel</span>
+                    </a>
+                    <a href="cuidado_personal.html" class="category-card cat-card-float">
+                        <div class="category-image icon-personal"></div>
+                        <span>Cuidado personal</span>
+                    </a>
+                    <a href="insumos_medicos.html" class="category-card cat-card-float">
+                        <div class="category-image icon-medicos"></div>
+                        <span>Insumos médicos</span>
+                    </a>
+                    <a href="maquillaje.html" class="category-card cat-card-float">
+                        <div class="category-image icon-maquillaje"></div>
+                        <span>Maquillaje</span>
+                    </a>
+                    <a href="medicamentos.html" class="category-card cat-card-float">
+                        <div class="category-image icon-medicamentos"></div>
+                        <span>Medicamentos</span>
+                    </a>
+
+                     <a href="ui.html" class="category-card cat-card-float">
+                        <div class="category-image icon-medicamentos"></div>
+                        <span>U.i</span>
+                    </a>
+
+                     <a href="drogablanca.html" class="category-card cat-card-float">
+                        <div class="category-image icon-medicamentos"></div>
+                        <span>drogablanca</span>
+                    </a>
+
+                   
+                    
+                </div>
+                <button class="slider-arrow right-arrow" onclick="scrollCategories(1)"><i class="fas fa-chevron-right"></i></button>
+            </div>
+        </section>
+
+        <section class="products-section">
+            <h2>Productos Disponibles</h2>
+            <div id="product-container" class="product-grid">
+                <p>Cargando productos...</p>
+            </div>
+        </section>
+        
+        <div id="cart-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-button">&times;</span>
+                <h3>🛒 Tu Carrito de Compras</h3>
+                <div id="cart-items-list" class="cart-items-list"></div>
+                <div class="cart-summary">
+                    <p>Total: <span id="cart-total">$0.00</span></p>
+                    <button id="checkout-button" class="checkout-btn" disabled>Finalizar Compra</button>
+                    <button id="clear-cart-button" class="clear-cart-btn">Vaciar Carrito</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="catalogo.js"></script> 
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            loadAllProducts('product-container'); 
+        });
+    </script>
+</body>
+</html>

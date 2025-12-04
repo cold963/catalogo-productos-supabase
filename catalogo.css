@@ -1,0 +1,319 @@
+/* --- Estilos Generales --- */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f2f5; /* Fondo gris muy suave */
+    color: #333;
+}
+
+.container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+h2 {
+    color: #333;
+    font-size: 1.5em;
+    font-weight: 600;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 5px;
+}
+
+/* --- HEADER SIMPLE (Fondo blanco con línea azul) --- */
+.main-header {
+    background-color: white;
+    color: #333;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    border-top: 5px solid #007bff; /* Línea azul en la parte superior */
+}
+
+.header-logo {
+    font-size: 1.4em;
+    font-weight: bold;
+    color: #007bff;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.user-info {
+    font-size: 1em;
+    color: #555;
+}
+
+.cart-button-style {
+    background: #007bff; 
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    position: relative;
+    transition: background-color 0.3s;
+}
+
+.cart-button-style:hover {
+    background: #0056b3;
+}
+
+/* --- Sección de Búsqueda --- */
+.search-section {
+    padding: 15px 0 30px;
+}
+
+.search-container {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+#search-input {
+    width: 100%;
+    padding: 12px 15px;
+    padding-right: 40px; 
+    font-size: 1em;
+    border: 1px solid #ccc;
+    border-radius: 25px; /* Bordes redondeados */
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.search-icon {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+}
+
+/* --- Sección de Categorías Destacadas (Ajuste de Suavidad y Tamaño) --- */
+.categories-section {
+    padding: 10px 0 40px;
+    background-color: #f7f9fb; /* Fondo muy ligeramente gris para que floten */
+    margin: 0 -20px; /* Extender el fondo un poco a los lados */
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+h2 {
+    color: #555; /* Color de título más suave */
+    font-size: 1.4em;
+    font-weight: 500;
+    margin-bottom: 20px;
+    border-bottom: none; /* Quitamos la línea de abajo para un look más limpio */
+    padding-bottom: 0;
+    text-align: center; /* Centramos el título */
+}
+
+.category-slider-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Centra el carrusel */
+}
+
+.categories-list {
+    display: flex;
+    overflow-x: scroll; 
+    scroll-behavior: smooth;
+    gap: 15px; /* Espacio más compacto entre tarjetas */
+    padding: 10px 0;
+    flex-grow: 1;
+    max-width: 1000px; /* Limita el ancho del slider para centrarlo mejor */
+    /* Ocultar scrollbar */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+.categories-list::-webkit-scrollbar {
+    display: none;
+}
+
+/* Tarjeta de Categoría (El estilo que buscamos) */
+.cat-card-float {
+    text-align: center;
+    text-decoration: none;
+    color: #555;
+    min-width: 120px; /* REDUCCIÓN: Tarjeta más pequeña */
+    height: 140px; /* Altura definida para consistencia */
+    background: white;
+    border-radius: 12px; /* BORDES MÁS SUAVES */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.08); /* Sombra sutil y suave */
+    padding: 10px;
+    transition: transform 0.3s, box-shadow 0.3s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between; /* Distribuye el contenido */
+    flex-shrink: 0; /* Evita que se encoja al deslizar */
+}
+
+.cat-card-float:hover {
+    transform: translateY(-3px); /* Movimiento de flotación reducido */
+    box-shadow: 0 6px 15px rgba(0,0,0,0.12); /* Sombra ligeramente más fuerte al pasar el ratón */
+}
+
+.category-image {
+    width: 90%; /* Ancho ajustado */
+    height: 100px; /* REDUCCIÓN: Imagen más pequeña */
+    background-size: contain; 
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-top: 5px; /* Espacio superior */
+    border-radius: 8px;
+}
+
+.cat-card-float span {
+    font-size: 0.8em; /* Letra más pequeña */
+    font-weight: 500;
+    display: block;
+    margin-top: 5px;
+    color: #333;
+}
+
+/* Flechas de Navegación */
+.slider-arrow {
+    background: white; /* Flechas blancas */
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    width: 30px; /* Flecha más pequeña */
+    height: 30px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    color: #007bff;
+    /* ... otros estilos se mantienen ... */
+}
+
+/* Colores de Categoría (Usa tus propias imágenes o iconos de fondo) */
+.icon-piel { background-image: url('cuidadoparapiel.jpg'); background-color: #fef8f8; } 
+.icon-personal { background-image: url('cuidadopersonal.jpg'); background-color: #f7faff; } 
+.icon-medicos { background-image: url('medicos.jpg'); background-color: #f2fffa; } 
+.icon-maquillaje { background-image: url('maquillage.jpg'); background-color: #fefaff; } 
+.icon-medicamentos { background-image: url('medicamentos.jpg'); background-color: #f9fff6; } 
+.icon-drogablanca { background-image: url('blanca.jpg'); background-color: #f9fff6; } 
+.icon-ui { background-image: url('u.i.jpg'); background-color: #f9fff6; } 
+
+
+.slider-arrow {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9em;
+    color: #007bff;
+    cursor: pointer;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    z-index: 2;
+    margin: 0 5px;
+}
+
+/* --- Sección de Productos (Minimalista) --- */
+.products-section {
+    padding-top: 20px;
+}
+
+.product-grid {
+    display: grid;
+    /* Tarjetas muy pequeñas, enfocadas en la información */
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); 
+    gap: 20px;
+}
+
+.product-card {
+    background: white;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.05);
+    transition: box-shadow 0.2s;
+    display: flex;
+    flex-direction: column;
+    height: 250px; /* Altura muy compacta */
+}
+
+.product-card:hover {
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+
+.product-card img {
+    width: 100%;
+    height: 100px; /* Imagen muy pequeña, centrada en el producto */
+    object-fit: contain; /* Usamos 'contain' para que la imagen se vea completa */
+    padding: 5px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.card-body {
+    padding: 10px;
+    text-align: left;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.card-body h3 {
+    font-size: 0.95em; 
+    margin: 0 0 5px 0;
+    color: #333;
+    font-weight: 500;
+    height: 2.5em; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.price {
+    color: #dc3545;
+    font-size: 1.1em;
+    font-weight: bold;
+    margin: 5px 0 0;
+}
+
+.stock {
+    font-size: 0.75em;
+    color: #6c757d;
+    margin-bottom: 8px;
+}
+
+.add-to-cart-btn {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 6px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.85em;
+    width: 100%;
+}
+
+.add-to-cart-btn:hover {
+    background-color: #1e7e34;
+}
+
+/* --- Estilos del Modal (Mantenidos) --- */
+/* ... (Mantén los estilos de tu modal para que el carrito funcione) */
+.modal { display: none; position: fixed; z-index: 10; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4); }
+.modal-content { background-color: #fefefe; margin: 10% auto; padding: 20px; border: 1px solid #888; width: 80%; max-width: 600px; border-radius: 8px; position: relative; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+.close-button { color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer; }
+.cart-summary { margin-top: 20px; padding-top: 15px; border-top: 2px solid #007bff; text-align: right; font-size: 1.2em; font-weight: bold; }
+.checkout-btn, .clear-cart-btn { padding: 10px 15px; border: none; border-radius: 5px; margin-left: 10px; cursor: pointer; transition: opacity 0.3s; }
+.checkout-btn { background-color: #007bff; color: white; }
+.clear-cart-btn { background-color: #dc3545; color: white; }
+.checkout-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.cart-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px dashed #ddd; }
+.cart-item-info { flex-grow: 1; }
+.cart-item-controls { display: flex; align-items: center; gap: 10px; }

@@ -1,127 +1,117 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Mega Distribuidora - Tu Mayorista de Confianza</title>
-    <link rel="stylesheet" href="index.css"> 
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tu Tienda de Cascos - Inicio</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-
     <header class="main-header">
-        <div class="logo">
-            <h1>Mega<span class="highlight">Distribuidora</span></h1>
+        <div class="container header-content">
+            <a href="#" class="logo">MOTOPANNIER</a>
+            <nav class="main-nav">
+                <button class="menu-toggle" aria-label="Abrir menú"><i class="fas fa-bars"></i></button>
+                <ul class="nav-list">
+                    <li><a href="#">Cascos Integrales</a></li>
+                    <li><a href="#">Cascos Abatibles</a></li>
+                    <li><a href="#">Cascos Abiertos</a></li>
+                    <li><a href="#">Accesorios</a></li>
+                    <li><a href="#">Contacto</a></li>
+                </ul>
+            </nav>
+            <div class="header-icons">
+                <a href="#" aria-label="Buscar"><i class="fas fa-search"></i></a>
+                <a href="seccion.html" aria-label="Mi cuenta"><i class="fas fa-user"></i></a>
+                <a href="maquillaje.html" aria-label="Carrito de compras"><i class="fas fa-shopping-cart"></i><span class="cart-count">0</span></a>
+            </div>
         </div>
-
-        <nav class="main-nav">
-            <button class="menu-btn" id="menuBtn" aria-label="Menú Principal">
-                <span></span><span></span><span></span>
-            </button>
-            <ul class="nav-links" id="navLinks">
-                <li><a href="#home">Inicio</a></li>
-                <li><a href="carrito.html">Productos</a></li>
-                <li><a href="#categorias">Categorías</a></li>
-                
-                <li>
-                    <a href="https://wa.me/573174420752" target="_blank" class="whatsapp-link" aria-label="WhatsApp">
-                        <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-                           <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm3.33 14.17c-.12.3-.47.45-.77.3a4.28 4.28 0 0 1-5.6-3.8c0-.3.15-.65.45-.77.12-.05.25-.07.38-.07h.05c.2 0 .4.1.5.3.1.2.2.4.3.5.3.6.7 1.2 1.2 1.5.1.1.2.1.3.1.2 0 .4-.1.6-.2.1-.1.2-.2.4-.4.2-.2.4-.3.6-.4.4-.3.8-.5 1.2-.6.2-.1.4-.1.6 0 .3.1.5.3.6.5.1.2.1.4 0 .6-.1.2-.2.4-.3.6-.1.2-.2.4-.3.6zM12 3.6c-4.63 0-8.4 3.77-8.4 8.4 0 1.95.66 3.74 1.77 5.14L3.6 20.4l3.19-1.07c1.3.74 2.8 1.17 4.7 1.17 4.63 0 8.4-3.77 8.4-8.4S16.63 3.6 12 3.6zm4.7 9.8c-.3-.15-.6-.3-.9-.4-.3-.1-.6-.2-.9-.3-.3-.1-.6-.2-.9-.3-.3-.1-.6-.1-.9-.1-.3 0-.6.1-.9.2-.3.1-.6.2-.9.3-.3.1-.6.3-.9.4-.3.1-.6.3-.9.4-.3.1-.6.3-.9.4-.3.1-.6.3-.9.4-.3.1-.6.3-.9.4-.3.1-.6.3-.9.4-.3.1-.6.3-.9.4-.3.1-.6.3-.9.4z" />
-                        </svg>
-                    </a>
-                </li>
-            </ul>
-        </nav>
     </header>
 
     <main>
-        
-        <section class="hero-banner" id="home">
-            <div class="hero-content">
-                <h2 class="animate-in">Distribución Mayorista <span class="highlight">Confiable</span> y Ágil</h2>
-                <p class="animate-in delay-1">Productos de Calidad, Precios Competitivos y Servicio Excepcional en Popayán, Cauca.</p>
-                <a href="carrito.html" class="btn-primary animate-in delay-2">Explora Nuestros Productos</a>
-            </div>
-            <div class="hero-image-container animate-fade">
-                <img src="logo.jpeg" alt="Imagen de presentación de MegaDistribuidora">
+        <section class="hero-banner">
+            <div class="container hero-content">
+                <h1>Descubre la Seguridad y el Estilo en Cada Trayecto</h1>
+                <p>La colección más exclusiva de cascos para tu pasión sobre ruedas.</p>
+                <button class="btn btn-primary">Ver Novedades</button>
             </div>
         </section>
 
-        <section class="categorias-destacadas section-padding" id="categorias">
-            <h2 class="section-title animate-in">Descubre Nuestras Categorías</h2>
-            <div class="categorias-carousel">
-                <button class="cat-btn prev" aria-label="Categoría Anterior" data-direction="prev">&#10094;</button>
-                <div class="categorias-track">
-                    <div class="categoria-card animate-fade delay-3" data-category="piel"><a href="cuidadoparapiel.html"><img src="cuidadoparapiel.jpg" alt="Cuidado Piel"><div class="cat-nombre">Cuidado para la Piel</div></a></div>
-                    <div class="categoria-card animate-fade delay-4" data-category="personal"><a href="cuidadopersonal.html"><img src="cuidadopersonal.jpg" alt="Cuidado Personal"><div class="cat-nombre">Cuidado Personal</div></a></div>
-                    <div class="categoria-card animate-fade delay-5" data-category="medicos"><a href="insumosmedicos.html"><img src="medicos.jpg" alt="Insumos Médicos"><div class="cat-nombre">Insumos Médicos</div></a></div>
-                    <div class="categoria-card animate-fade delay-6" data-category="maquillaje"><a href="maquillaje.html"><img src="maquillage.jpg" alt="Maquillaje"><div class="cat-nombre">Maquillaje</div></a></div>
-                    <div class="categoria-card animate-fade delay-7" data-category="medicamentos"><a href="medicamentos.html"><img src="medicamentos.jpg" alt="Medicamentos"><div class="cat-nombre">Medicamentos</div></a></div>
-                    <div class="categoria-card animate-fade delay-8" data-category="ui"><a href="u.i.html"><img src="u.i.jpg" alt="U.I"><div class="cat-nombre">U.I.</div></a></div>
-                    <div class="categoria-card animate-fade delay-9" data-category="drogablanca"><a href="drogablanca.html"><img src="blanca.jpg" alt="Droga Blanca"><div class="cat-nombre">Droga Blanca</div></a></div>
-                    <div class="categoria-card animate-fade delay-10" data-category="all"><a href="carrito.html"><img src="todas.jpeg" alt="Todas las categorías"><div class="cat-nombre">Todas las Categorías</div></a></div>
+        <section class="featured-products">
+            <div class="container">
+                <h2>Nuestros Productos Destacados</h2>
+                <div class="product-grid">
+                    <div class="product-card">
+                        <img src="https://via.placeholder.com/300x200/4a4a4a/ffffff?text=Casco+Integral" alt="Casco Integral">
+                        <h3>Casco Integral Deportivo</h3>
+                        <p class="price">$250.00</p>
+                        <button class="btn btn-secondary">Ver Detalles</button>
+                    </div>
+                    <div class="product-card">
+                        <img src="https://via.placeholder.com/300x200/4a4a4a/ffffff?text=Casco+Abatible" alt="Casco Abatible">
+                        <h3>Casco Abatible Urbano</h3>
+                        <p class="price">$180.00</p>
+                        <button class="btn btn-secondary">Ver Detalles</button>
+                    </div>
+                    <div class="product-card">
+                        <img src="https://via.placeholder.com/300x200/4a4a4a/ffffff?text=Casco+Jet" alt="Casco Jet">
+                        <h3>Casco Jet Clásico</h3>
+                        <p class="price">$120.00</p>
+                        <button class="btn btn-secondary">Ver Detalles</button>
+                    </div>
                 </div>
-                <button class="cat-btn next" aria-label="Categoría Siguiente" data-direction="next">&#10095;</button>
+                <div class="view-all-button">
+                    <button class="btn btn-primary">Explorar Todos los Cascos</button>
+                </div>
             </div>
         </section>
 
-        <section class="nosotros-info section-padding" id="nosotros">
-            <h2 class="section-title animate-in">Quiénes Somos</h2>
-            <div class="nosotros-content">
-                <p class="animate-in delay-1">En **MegaDistribuidora**, somos tu aliado estratégico, dedicados a ofrecer una amplia gama de productos de alta calidad. Nuestro compromiso es garantizar **precios competitivos** y un servicio ágil y personalizado, superando las expectativas de cada uno de nuestros clientes en Popayán y el Cauca.</p>
-                <p class="animate-in delay-2">Trabajamos con visión de futuro, buscando ser sinónimo de **excelencia e innovación** en el sector mayorista. Fortalecemos la confianza de nuestros socios comerciales a través de un crecimiento sostenible y enfocado en el propósito de ser el distribuidor líder en la región.</p>
+        <section class="cta-section">
+            <div class="container">
+                <h2>¡No te Pierdas Nuestras Ofertas!</h2>
+                <p>Suscríbete a nuestro boletín y recibe las últimas novedades y descuentos exclusivos.</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Introduce tu email" required>
+                    <button type="submit" class="btn btn-primary">Suscribirse</button>
+                </form>
             </div>
         </section>
-        
     </main>
 
     <footer class="main-footer">
-
-        <div class="beneficios-footer">
-            <div class="beneficio-item animate-in">
-                <svg viewBox="0 0 24 24" width="40" height="40" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-                <div class="beneficio-texto">Atención al <br>Cliente</div>
+        <div class="container footer-grid">
+            <div class="footer-column">
+                <h3>Tu Tienda de Cascos</h3>
+                <p>La mejor selección para tu seguridad y estilo.</p>
+                <div class="social-icons">
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                </div>
             </div>
-            <div class="beneficio-item animate-in delay-1">
-                <svg viewBox="0 0 24 24" width="40" height="40" fill="currentColor"><path d="M20 8h-3V4H7v4H4v10h16V8zm-6 10h-4v-4h4v4zm1-8V6h4v2h-4zM9 6h4v2H9V6z"/></svg>
-                <div class="beneficio-texto">Envíos Rápidos y <br>Confiables</div>
+            <div class="footer-column">
+                <h3>Navegación</h3>
+                <ul>
+                    <li><a href="#">Inicio</a></li>
+                    <li><a href="#">Tienda</a></li>
+                    <li><a href="#">Ofertas</a></li>
+                    <li><a href="#">Preguntas Frecuentes</a></li>
+                </ul>
             </div>
-            <div class="beneficio-item animate-in delay-2">
-                <svg viewBox="0 0 24 24" width="40" height="40" fill="currentColor"><path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4V8h16v10zm-3-8V6H7v2h10z"/></svg>
-                <div class="beneficio-texto">Múltiples <br>Medios de Pago</div>
-            </div>
-        </div>
-
-        <div class="footer-grid-container">
-            <div class="footer-contact-info animate-in">
+            <div class="footer-column">
                 <h3>Contacto</h3>
-                <p>📍 Popayán, Cauca, Colombia</p>
-                <p>📞 +57 317 4420752</p>
-                <p>📧 megadistribuidora68@gmail.com</p>
-            </div>
-            
-            <form class="footer-form animate-in delay-1" id="footerEmailForm">
-                <h3 class="form-title">Envíanos un Mensaje</h3>
-                <input type="email" placeholder="Tu correo electrónico" required>
-                <textarea placeholder="Escribe tu consulta" required></textarea>
-                <button type="submit" class="btn-secondary">Enviar Mensaje</button>
-                <div id="formStatus" class="form-status"></div>
-            </form>
-
-            <div class="admin-link animate-fade delay-2">
-                <a href="seccion.html" aria-label="Acceso a Administración" title="Acceso de Administrador">
-                    <svg viewBox="0 0 24 24" width="60" height="60" fill="white"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-                </a>
-                <p class="admin-text">Área Administrativa</p>
+                <p>Email: info@tutiendadecascos.com</p>
+                <p>Teléfono: +123 456 7890</p>
+                <p>Dirección: Calle Falsa 123, Ciudad, País</p>
             </div>
         </div>
-        
         <div class="footer-bottom">
-            <p>&copy; 2025 MegaDistribuidora. Todos los derechos reservados.</p>
+            <p>&copy; 2023 Tu Tienda de Cascos. Todos los derechos reservados.</p>
         </div>
-
     </footer>
 
-    <script src="index.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
